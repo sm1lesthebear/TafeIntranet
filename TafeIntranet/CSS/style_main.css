@@ -1,0 +1,39 @@
+body {
+    height: 100%;
+}
+
+li {
+    text-align: center;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: #FFFF00;
+    color: #FFC0CB;
+}
+
+.row-margin-top {
+    margin-top: 20px;
+}
+
+
+
+.margin-top {
+    margin-top: 15px;
+}
+
+#margin-right-left {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.img-max-min {
+    max-height: 75px;
+    max-width: 244px;
+    min-height: 75px;
+    min-width: 244px;
+}
+
+.margin-bottom
+{
+    margin-bottom: 15px;
+}
