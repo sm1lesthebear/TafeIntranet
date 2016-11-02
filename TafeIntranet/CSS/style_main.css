@@ -1,39 +1,116 @@
 body {
     height: 100%;
+    width: 100%;
+    background-color: #f0f0f0;
 }
-
-li {
-    text-align: center;
-}
-
-.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-    background-color: #FFFF00;
-    color: #FFC0CB;
-}
-
 .row-margin-top {
     margin-top: 20px;
 }
-
-
-
+* {
+    border-radius: 0 !important;
+    border-style: none !important;
+    font-size: 100%;
+    font-family: Arimo !important;
+    /*font-family: "Comic Sans MS", "Comic Sans", cursive !important;*/
+}
+.nav-toggle-adjust
+{
+    float: left !important;
+}
+.navbar {
+    margin-bottom: 0 !important;
+}
 .margin-top {
     margin-top: 15px;
 }
-
 #margin-right-left {
     margin-left: 15px;
     margin-right: 15px;
 }
-
-.img-max-min {
-    max-height: 75px;
-    max-width: 244px;
-    min-height: 75px;
-    min-width: 244px;
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+     background: rgba(214,214,214,0.2);
+     color: #f0f0f0;
+ }
+.navbar-default{
+    border-bottom: solid !important;
+    border-bottom-color: #f37332 !important;
+}
+#sidebar-wrapper {
+    border-right: solid !important;
+    border-right-color: #f37332 !important;
 }
 
+.sidebar-nav > li > a {
+    text-align: left;
+}
+
+.img-max-min {
+    padding-top: 20px;
+    max-height: 73px;
+    max-width: 400px;
+    min-height: 48px;
+    min-width: 266px;
+}
 .margin-bottom
 {
     margin-bottom: 15px;
 }
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin: 0 auto;
+}
+input, textarea, select, .form-group > div > a, .btn, .btn-default {
+    box-shadow: 2px 2px 1px #d6d6d6 !important;
+}
+input[type=checkbox]{
+    box-shadow: none !important;
+    float: right;
+}
+.input-alert
+{
+    border-bottom: 2px solid !important;
+    border-bottom-color: rgba(240,0,0, 2.0) !important;
+}
+.form-max-width
+{
+    max-width: 500px;
+}
+.item {
+    background-position: center;
+    background-size: cover;
+}
+.carousel-inner {
+    height: 300px;
+}
+.glyphicon-chevron-right
+{
+    border: none !important;
+}
+.btn-transparency {
+    background-color: rgba(255,255,255, 0.8);
+}
+.stakeholder-container {
+    background-color: #ffffff;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    box-shadow: 2px 2px 1px #d6d6d6 !important;
+    max-height: 300px;
+    overflow: scroll;
+}
+.stakeholder-img-fluid {
+    width:100%;
+    height: 250px;
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+
+}
+
+
+
