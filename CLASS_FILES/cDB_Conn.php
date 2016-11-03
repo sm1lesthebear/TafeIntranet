@@ -10,7 +10,7 @@ require_once "cClass_Connector.php";
         public static function oConn()
         {
             if (!isset(self::$oConn)) {
-                self::$oConn = new PDO('mysql:host=localhost; dbname=intranetdb; charset=utf8', 'root', 'Password1');
+                self::$oConn = new PDO('mysql:host=localhost; dbname=intranetdb; charset=utf8', 'root', '');
             }
             return self::$oConn;
         }
