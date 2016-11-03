@@ -3,7 +3,7 @@ require_once "CLASS_FILES/cClass_Connector.php";
 //$UserCheck = new User_Account_Functions();
 //$UserCheck->userChecks(3);
 $outgoing_HTML = <<<HTML
-<!--                      Carousel ================================================== -->
+<!--                      Carousel  -->
                         <div class="slideshow-container">
                             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                               <!-- Indicators -->
