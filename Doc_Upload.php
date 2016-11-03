@@ -4,17 +4,13 @@ $UserCheck = new User_Account_Functions();
 $Function_lib = new function_lib();
 $UserCheck->userchecks(3);
 
-// Page Variable Declarations
 
-
-
-// Page Variable Declarations
 
 $outgoing_HTML = <<<HTML
 <div class="col-sm-10 col-sm-offset-1">
   <h3>Upload A Document</h3>
 </div>
-<form>
+<form action="Stakeholder_Details.php" method="post" enctype="multipart/form-data" class="margin-top" role="form">
   <div class="form-group">
     <div class="col-sm-10 col-sm-offset-1 margin-bottom">
       <label class="margin-top" for="file_upload">File to Upload : </label>
@@ -83,3 +79,4 @@ HTML;
 $oPage_Load = new Page_Load($outgoing_HTML);
 echo $oPage_Load->getPage();
 ?>
+
