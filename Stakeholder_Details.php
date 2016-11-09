@@ -8,7 +8,8 @@ $image_fail = "";
 $image_input_alert = "";
 $StakeholderOptions = "";
 $StakeholderID = "";
-$SubmitButtonClass = "col-sm-4 col-sm-offset-6";
+$StakeholderImage = "";
+$SubmitButtonClass = "col-sm-4  ";
 $DeleteButton = '<div class="' . $SubmitButtonClass . '">
                     <input type="submit" name="Submit" value="Submit" class="form-control btn btn-default">
                   </div>';
@@ -16,10 +17,6 @@ $i_Image = "";
 $i_First_Name = "";
 $i_Last_Name = "";
 $i_Info = "";
-
-echo exec('whoami');
-
-
 if($_SERVER['REQUEST_METHOD'] == "POST") {
     switch ($_POST['Submit']) {
         case 'Submit':
@@ -40,14 +37,21 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
                 $string = str_replace(' ', '', $i_Image["name"]);
                 $target_dir = "RESOURCES/StakeholderImages/";
                 $target_file = $target_dir . basename($string);
-                
                 if (!file_exists($target_file)) 
                 {
                     move_uploaded_file($i_Image["tmp_name"], $target_file);
                 }
-              
+                $StakeholderImage = <<<HTML
+                <div class="form-group">
+                  <div class="col-sm-10 col-sm-offset-1">
+                    <h5 class="margin-bottom">Current Stakeholder Image:</h5>
+                    <img src="$target_file" class="image_fluid">
+                  </div>
+                </div>
+HTML;
             }
-            if ($StakeholderID == null) {
+            if ($StakeholderID == null) 
+            {
                 $sSQL = <<<SQL
                 insert into tbl_stakeholders
                 (fldFirstName,fldLastName,fldImageLocation,fldInfo)
@@ -62,43 +66,15 @@ SQL;
                 ":Info" => $i_Info
             );
             $StakeholderID = $DBFunctions->commitSQL($sSQL, $Array);
-            $SubmitButtonClass = "col-sm-4";
             $DeleteButton = <<<HTML
-                            <div class="col-sm-4 col-sm-offset-2 margin-bottom">
+                            <div class="col-sm-4   margin-bottom">
                                 <input type="submit" name="Submit" value="Delete" class="form-control btn btn-default">
                             </div>
-                            <div class="$SubmitButtonClass">
-                                <input type="submit" name="Submit" value="Update" class="form-control btn btn-default">
-                            </div>
+                            
 HTML;
             
 
             break;
-      case "Update":
-              $sSQL = <<<SQL
-                    update
-                        tbl_stakeholders
-                    set
-                        fldFirstName = :Firstname, fldLastName = :LastName, fldImageLocation = :Image, fldInfo = :Info
-                    where
-                        fldID = $StakeholderID
-SQL;
-              $Array = array(
-                ":Firstname" => $i_First_Name,
-                ":LastName" => $i_Last_Name,
-                ":Image" => $target_file,
-                ":Info" => $i_Info
-              );
-            $SubmitButtonClass = "col-sm-4";
-            $DeleteButton = <<<HTML
-                            <div class="col-sm-4 col-sm-offset-2 margin-bottom">
-                                <input type="submit" name="Submit" value="Delete" class="form-control btn btn-default">
-                            </div>
-                            <div class="$SubmitButtonClass">
-                                <input type="submit" name="Submit" value="Update" class="form-control btn btn-default">
-                            </div>
-HTML;
-        break;
       case "Delete":
             $StakeholderID = $Function_lib->checkValue("StakeholderID", "");
             $sSQL = <<<SQL
@@ -124,14 +100,25 @@ SQL;
                     $i_Last_Name = $row['fldLastName'];
                     $i_Info = $row['fldInfo'];
                     $i_ImageLocation = $row['fldImageLocation'];
+                  $StakeholderImage = <<<HTML
+                <!--      <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-1">
+                          <h4 class="margin-bottom">Current Stakeholder Image:</h4>
+                          <img src="$i_ImageLocation" class="image_fluid">
+                        </div>
+                      </div>
+                      -->
+                      <div class="stakeholder-container col-sm-10 col-sm-offset-1 margin-bottom margin-top">
+                        <div class="col-sm-12">
+                            <h4 class="margin-bottom">Current Stakeholder Image:</h4>
+                            <img src="$i_ImageLocation" class="image_fluid">
+                        </div>
+                    </div>
+HTML;
                 }
-              $SubmitButtonClass = "col-sm-4";
               $DeleteButton = <<<HTML
-                            <div class="col-sm-4 col-sm-offset-2 margin-bottom">
+                            <div class="col-sm-4 margin-bottom">
                                 <input type="submit" name="Submit" value="Delete" class="form-control btn btn-default">
-                            </div>
-                            <div class="$SubmitButtonClass">
-                                <input type="submit" name="Submit" value="Submit" class="form-control btn btn-default">
                             </div>
 HTML;
             }
@@ -142,46 +129,44 @@ HTML;
 
 
 $outgoing_HTML = <<<HTML
-                            <div class="col-sm-8 col-sm-offset-2">
+                            <div class="col-sm-10 col-sm-offset-1">
                                 <h3>Edit a Stakeholder </h3>
                             </div>
                             
                             <div class="margin-top">
                               <form action="Stakeholder_Details.php" enctype="multipart/form-data" method="post" class="form-horizontal margin-top" role="form">
                                   <div class="form-group" id="">
-                                      <label class="col-sm-8 col-sm-offset-2" for="First_Name">First Name :</label>
-                                      <div class="col-sm-8 col-sm-offset-2">
+                                      <label class="col-sm-10 col-sm-offset-1" for="First_Name">First Name :</label>
+                                      <div class="col-sm-10 col-sm-offset-1">
                                           <input required maxlength="45" type="text"  class="form-control" name="First_Name" id="First_Name" Placeholder="Enter first name..." value="$i_First_Name">
                                       </div>
                                   </div>
                                   <div class="form-group" id="">
-                                      <label class="col-sm-8 col-sm-offset-2 margin-top" for="Last_Name">Last Name :</label>
-                                      <div class="col-sm-8 col-sm-offset-2">
+                                      <label class="col-sm-10 col-sm-offset-1 margin-top" for="Last_Name">Last Name :</label>
+                                      <div class="col-sm-10 col-sm-offset-1">
                                           <input required maxlength="45" type="text"  class="form-control" name="Last_Name" id="Last_Name" Placeholder="Enter last name..." value="$i_Last_Name">
                                       </div>
                                   </div>
                                   <div class="form-group" id="">
-                                      <label class="col-sm-8 col-sm-offset-2 margin-top" for="Info">Stakeholder Info :</label>
-                                      <div class="col-sm-8 col-sm-offset-2">
+                                      <label class="col-sm-10 col-sm-offset-1 margin-top" for="Info">Stakeholder Info :</label>
+                                      <div class="col-sm-10 col-sm-offset-1">
                                           <textarea required class="form-control" name="Info" id="Info" Placeholder="Enter info about the Stakeholder...">$i_Info</textarea>
                                       </div>
                                   </div>
                                   <div class="form-group" id="">
-                                      <label class="col-sm-8 col-sm-offset-2 margin-top" for="file_upload">Stakeholder Picture :</label>
-                                      <div class="col-sm-8 col-sm-offset-2">
+                                      <label class="col-sm-10 col-sm-offset-1 margin-top" for="file_upload">Stakeholder Picture :</label>
+                                      <div class="col-sm-10 col-sm-offset-1">
                                           <input required class="form-control btn btn-default $image_input_alert" type="file" name="file_upload" id="file_upload">
                                       </div>
-                                      <p class="col-sm-8 col-sm-offset-2 margin-top">$image_fail</p>
+                                      <p class="col-sm-10 col-sm-offset-1 margin-top">$image_fail</p>
                                   </div>
+                                  $StakeholderImage
                                   <input type="hidden" value="$StakeholderID" name="StakeholderID">
                                   <div class="form-group">
-                                      $DeleteButton
-                                      
-                                  </div>
-                                  <div class="form-group">
-                                      <div class="col-sm-4 col-sm-offset-6 margin-top">
+                                      <div class="col-sm-4 col-sm-offset-2">
                                           <a href="Stakeholder_Details.php" class="form-control btn btn-default">Clear</a>
                                       </div>
+                                      $DeleteButton
                                   </div>
                             </form>
                           </div>

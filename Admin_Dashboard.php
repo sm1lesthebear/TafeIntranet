@@ -55,11 +55,11 @@ $outgoing_HTML = <<<HTML
                                 </tbody>
                         </table>
                     </div>
-                    <div class="col-sm-5 col-sm-offset-1">
+                    <div class="col-sm-5">
                         <a href="User_Details.php" class="btn btn-default form-control margin-top">Create New User</a>
                     </div>
-                    <div class="col-sm-5 col-sm-offset-1">
-                        <a href="Stakeholder_Details.php" class="btn btn-default form-control margin-top">Edit Stakeholders</a>
+                    <div class="col-sm-5 col-sm-offset-2">
+                        <a href="Stakeholder_List.php" class="btn btn-default form-control margin-top">View Stakeholders List</a>
                     </div>
 
 HTML;

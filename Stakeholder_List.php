@@ -9,29 +9,20 @@ $SQL = <<<SQL
         select 
             fldID, 
             CONCAT(fldFirstName, ' ', fldLastName) as Name, 
-            fldEmail, 
-            fldUserName, 
-            (select fldTitle 
-                from tbl_privilege 
-                where fldID = fldFkPrivilegeId) 
-        as Privilege 
-        from tbl_user
+            fldInfo
+        from tbl_stakeholders
 SQL;
 foreach ($DBFunctions->getfromDB($SQL) as $BeepBoop) {
 
-    $UserID = $BeepBoop['fldID'];
-    $UserRealName = $BeepBoop['Name'];
-    $UserEmail = $BeepBoop['fldEmail'];
-    $UserName = $BeepBoop['fldUserName'];
-    $UserPrivilege = $BeepBoop['Privilege'];
+    $StakekholderID = $BeepBoop['fldID'];
+    $StakeholderName = $BeepBoop['Name'];
+    $StakeholderInfo = $BeepBoop['fldInfo'];
     $TableRow .= <<<HTML
     
-                <tr style="cursor:pointer" onclick="location.href='User_Details.php?UserID=$UserID'">
-                    <td class="col-sm-1">$UserID</td>
-                    <td class="col-sm-3">$UserRealName</td>
-                    <td class="col-sm-3">$UserEmail</td>
-                    <td class="col-sm-3">$UserName</td>
-                    <td class="col-sm-2">$UserPrivilege</td>
+                <tr style="cursor:pointer" onclick="location.href='Stakeholder_Details.php?StakeholderID=$StakekholderID'">
+                    <td class="col-sm-2">$StakekholderID</td>
+                    <td class="col-sm-4">$StakeholderName</td>
+                    <td class="col-sm-6">$StakeholderInfo</td>
                 </tr>
 HTML;
 }
@@ -43,11 +34,9 @@ $outgoing_HTML = <<<HTML
                                 <!--generated table info-->
                                 <thead>
                                     <tr>
-                                        <th>User ID</th>
-                                        <th>User Real Name</th>
-                                        <th>Email</th>
-                                        <th>Username</th>
-                                        <th>User Privlege</th>
+                                        <th>Stakholder ID</th>
+                                        <th>Stkaholder Full Name</th>
+                                        <th>Info</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,10 +45,10 @@ $outgoing_HTML = <<<HTML
                         </table>
                     </div>
                     <div class="col-sm-5 col-sm-offset-1">
-                        <a href="User_Details.php" class="btn btn-default form-control margin-top">Create New User</a>
+                        <a href="Stakeholder_Details.php" class="btn btn-default form-control margin-top">Create New Stakeholder</a>
                     </div>
                     <div class="col-sm-5 col-sm-offset-1">
-                        <a href="Stakeholder_Details.php" class="btn btn-default form-control margin-top">Edit Stakeholders</a>
+                        <a href="Admin_Dashboard.php" class="btn btn-default form-control margin-top">Goto Admin Dashboard</a>
                     </div>
 
 HTML;
