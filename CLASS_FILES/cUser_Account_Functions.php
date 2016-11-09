@@ -6,10 +6,19 @@ class User_Account_Functions extends DB_Functions
     {
         foreach (parent::getfromDB($i_SQL) as $row)
         {
-            if ($row["$i_fld_privilege"] > $i_RequirePrivilege)
-            {
-                return header("location:login.php");
-            }
+          if($row["$i_fld_privilege"] == 1 && $i_RequirePrivilege != 1)
+          {
+            header("location:Admin_Dashboard.php");
+          }
+          elseif ($row["$i_fld_privilege"] > $i_RequirePrivilege)
+          {
+                
+                return header("location:index.php?UserMessage=". urlencode("Incorrect User Permissions"));
+          }
+          elseif($i_RequirePrivilege == 1 && $row["$i_fld_privilege"] != 1)
+          {
+                return header("location:index.php?UserMessage=". urlencode("Incorrect User Permissions"));
+          }
             return null;
         }
         return die("no user found, sql error");

@@ -42,7 +42,7 @@ $outgoing_HTML = <<< HTML
                     </div>
                 </div>
                 <div class="col-sm-3 col-sm-offset-7 margin-top">
-                    <input  type="submit" name="submit" class="form-control btn btn-default text-center">
+                    <input type="submit" name="submit" class="form-control btn btn-default text-center">
                 </div>
                 <div id="login_check_result" class="col-sm-8 col-sm-offset-2">
                     $sIncorrectLogin

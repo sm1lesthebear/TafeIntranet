@@ -133,12 +133,13 @@ create table if not exists tbl_block (
 
 create table if not exists tbl_whs (
 	fldID BIGINT auto_increment not null,
+		fldTitle varchar(60) not null,
     fldDate TIMESTAMP not null default NOW(),
     fldFkWhsTypeId BIGINT not null,
     fldFkBlockId BIGINT not null,
     primary key (fldID),
-		index fldFkBlockIdIdx (fldFkBlockId),
-        index fldFkWhsTypeIdIdx (fldFkWhsTypeId),
+			index fldFkBlockIdIdx (fldFkBlockId),
+			index fldFkWhsTypeIdIdx (fldFkWhsTypeId),
 	constraint fldFkBlockId
 		foreign key (fldFkBlockId)
 			references intranetdb.tbl_block (fldID)

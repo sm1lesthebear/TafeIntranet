@@ -28,7 +28,6 @@ HTML;
         }
         return $sDropdownOptions;
     }
-// Not currently working but should work to enable file uploads in a future version
     public function image_handler($i_file)
     {
         if (isset($i_file)) {
@@ -74,15 +73,40 @@ HTML;
         }
         return null;
     }
-    public function insert_image($i_array, $i_sql) {
-        $oDBConnection = new cDB_Conn();
-        return $oDBConnection->commitSQL($i_sql, $i_array);
-    }
-
-    public function base64url_decode($data) {
-        return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
-    }
-    public function base64url_encode($data) {
-        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    public function Document_Handler($i_file)
+    {
+        if (isset($i_file)) {
+            $file_type = $i_file['type'];
+            $file_size = $i_file['size'];
+            switch ($file_type) {
+                case 'application/pdf':
+                    $uploadOk = 1;
+                    break;
+                case 'application/msword':
+                    $uploadOk = 1;
+                    break;
+                case 'application/vnd.ms-excel':
+                    $uploadOk = 1;
+                    break;
+                case 'application/vnd.ms-powerpoint':
+                    $uploadOk = 1;
+                    break;
+                case Null:
+                    $uploadOk = 0;
+                    break;
+                default:
+                    $uploadOk = 0;
+            }
+            // limit file size to 5mb
+            if ($file_size > 5242880) {
+                $uploadOk = 0;
+            }
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                return Null;
+            }
+                return $i_file;
+        }
+        return null;
     }
 }

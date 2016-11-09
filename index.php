@@ -2,6 +2,15 @@
 require_once "CLASS_FILES/cClass_Connector.php";
 //$UserCheck = new User_Account_Functions();
 //$UserCheck->userChecks(3);
+$Function_lib = new function_lib();
+$UserMessage = $Function_lib->checkValue("UserMessage", "");
+
+if($UserMessage != "")
+{
+  print '<script type="text/javascript">alert("' . $_GET['UserMessage'] . '");</script>';
+}
+
+
 $outgoing_HTML = <<<HTML
 <!--                      Carousel  -->
                         <div class="slideshow-container">

@@ -5,6 +5,16 @@ $Function_lib = new function_lib();
 $UserCheck->userchecks(3);
 
 
+$WHS_Dropdown = $Function_lib->getDropdown("select fldID, fldTitle from tbl_whs", "fldID", "fldTitle");
+$Sus_Dropdown = $Function_lib->getDropdown("select fldID, fldProjectName from tbl_sus", "fldID", "fldProjectName");
+$Doctype_Dropdown = $Function_lib->getDropdown("select fldID, fld", "", "");
+
+
+if($_SERVER['REQUEST_METHOD'] == "POST") {
+    
+    $i_File = $Function_lib->Document_Handler($_FILES['file_upload']);
+    
+}
 
 $outgoing_HTML = <<<HTML
 <div class="col-sm-10 col-sm-offset-1">
@@ -20,7 +30,8 @@ $outgoing_HTML = <<<HTML
   <div class="form-group">
            <div class="col-sm-5 col-sm-offset-1 margin-top" id="WHS" style="display: block;">
             <p>Work health and safety</p>
-            <select class="form-control">
+            <select name="WHS_Dropdown" class="form-control">
+                $WHS_Dropdown
                 <option id="x">Cancertroy</option>
                 <option id="x">Succ</option>
                 <option id="x">Ghey</option>
@@ -31,7 +42,8 @@ $outgoing_HTML = <<<HTML
         </div>
         <div class="col-sm-5 col-sm-offset-1 margin-top" style="display: none;" id="SUS">
             <p>Sustainability</p>
-            <select class="form-control">
+            <select name="SUS_Dropdown" class="form-control">
+                $Sus_Dropdown
                 <option id="x">Aids</option>
                 <option id="x">Succ</option>
                 <option id="x">Ghey</option>
@@ -79,4 +91,3 @@ HTML;
 $oPage_Load = new Page_Load($outgoing_HTML);
 echo $oPage_Load->getPage();
 ?>
-
