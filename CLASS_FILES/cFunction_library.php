@@ -85,6 +85,9 @@ HTML;
                 case 'application/msword':
                     $uploadOk = 1;
                     break;
+                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    $uploadOk = 1;
+                    break;
                 case 'application/vnd.ms-excel':
                     $uploadOk = 1;
                     break;
@@ -92,21 +95,26 @@ HTML;
                     $uploadOk = 1;
                     break;
                 case Null:
+                die("no File");
                     $uploadOk = 0;
                     break;
                 default:
+                die("default?");
                     $uploadOk = 0;
             }
             // limit file size to 5mb
             if ($file_size > 5242880) {
+                die("file size");
                 $uploadOk = 0;
             }
             // Check if $uploadOk is set to 0 by an error
             if ($uploadOk == 0) {
+                die("Upload OK?");
                 return Null;
             }
                 return $i_file;
         }
+        die("file not isset");
         return null;
     }
 }

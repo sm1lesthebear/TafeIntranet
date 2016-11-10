@@ -9,7 +9,7 @@ $image_input_alert = "";
 $StakeholderOptions = "";
 $StakeholderID = "";
 $StakeholderImage = "";
-$SubmitButtonClass = "col-sm-4  ";
+$SubmitButtonClass = "col-sm-4 col-sm-offset-2";
 $DeleteButton = '<div class="' . $SubmitButtonClass . '">
                     <input type="submit" name="Submit" value="Submit" class="form-control btn btn-default">
                   </div>';
@@ -42,12 +42,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
                     move_uploaded_file($i_Image["tmp_name"], $target_file);
                 }
                 $StakeholderImage = <<<HTML
-                <div class="form-group">
-                  <div class="col-sm-10 col-sm-offset-1">
-                    <h5 class="margin-bottom">Current Stakeholder Image:</h5>
-                    <img src="$target_file" class="image_fluid">
-                  </div>
-                </div>
+                <div class="stakeholder-container col-sm-10 col-sm-offset-1 margin-bottom margin-top">
+                        <div class="col-sm-12">
+                            <h4 class="margin-bottom">Current Stakeholder Image:</h4>
+                            <img src="$i_ImageLocation" class="image_fluid">
+                        </div>
+                    </div>
 HTML;
             }
             if ($StakeholderID == null) 
@@ -67,7 +67,7 @@ SQL;
             );
             $StakeholderID = $DBFunctions->commitSQL($sSQL, $Array);
             $DeleteButton = <<<HTML
-                            <div class="col-sm-4   margin-bottom">
+                            <div class="col-sm-4 col-sm-offset-2 margin-bottom">
                                 <input type="submit" name="Submit" value="Delete" class="form-control btn btn-default">
                             </div>
                             
@@ -108,7 +108,7 @@ SQL;
                         </div>
                       </div>
                       -->
-                      <div class="stakeholder-container col-sm-10 col-sm-offset-1 margin-bottom margin-top">
+                    <div class="stakeholder-container col-sm-10 col-sm-offset-1 margin-bottom margin-top">
                         <div class="col-sm-12">
                             <h4 class="margin-bottom">Current Stakeholder Image:</h4>
                             <img src="$i_ImageLocation" class="image_fluid">
@@ -117,7 +117,7 @@ SQL;
 HTML;
                 }
               $DeleteButton = <<<HTML
-                            <div class="col-sm-4 margin-bottom">
+                            <div class="col-sm-4 col-sm-offset-2 margin-bottom">
                                 <input type="submit" name="Submit" value="Delete" class="form-control btn btn-default">
                             </div>
 HTML;
@@ -163,7 +163,7 @@ $outgoing_HTML = <<<HTML
                                   $StakeholderImage
                                   <input type="hidden" value="$StakeholderID" name="StakeholderID">
                                   <div class="form-group">
-                                      <div class="col-sm-4 col-sm-offset-2">
+                                      <div class="col-sm-4 col-sm-offset-1">
                                           <a href="Stakeholder_Details.php" class="form-control btn btn-default">Clear</a>
                                       </div>
                                       $DeleteButton

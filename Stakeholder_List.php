@@ -44,10 +44,10 @@ $outgoing_HTML = <<<HTML
                                 </tbody>
                         </table>
                     </div>
-                    <div class="col-sm-5 col-sm-offset-1">
+                    <div class="col-sm-5">
                         <a href="Stakeholder_Details.php" class="btn btn-default form-control margin-top">Create New Stakeholder</a>
                     </div>
-                    <div class="col-sm-5 col-sm-offset-1">
+                    <div class="col-sm-5 col-sm-offset-2">
                         <a href="Admin_Dashboard.php" class="btn btn-default form-control margin-top">Goto Admin Dashboard</a>
                     </div>
 
