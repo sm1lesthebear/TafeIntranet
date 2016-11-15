@@ -47,8 +47,7 @@ create table if not exists tbl_privilege (
 create table if not exists tbl_whs_type (
 	fldID BIGINT auto_increment not null,
 	fldType varchar(30) not null,
-    fldDescription TEXT not null,
-    primary key (fldID))
+  primary key (fldID))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -68,18 +67,6 @@ create table if not exists tbl_sus (
 	fldID BIGINT auto_increment not null,
     fldProjectName varchar(40) not null,
     primary key (fldID));
-    
-    
-create table if not exists tbl_room (
-	fldID BIGINT auto_increment not null,
-    fldName varchar(30) not null,
-    fldFKBlockID BIGINT not null,
-    primary key (fldID),
-		index fldFKBlockIDIdx (fldFKBlockID),
-	constraint fldFKBlockID_cst
-		foreign key (fldFKBlockID)
-			references intranetdb.tbl_block (fldID)
-);
 
 /* table tbl_doc creation */
 
@@ -126,8 +113,12 @@ create table if not exists tbl_user (
 
 create table if not exists tbl_block (
 	fldID BIGINT auto_increment not null,
-    fldLetter varchar(20) not null,
-    primary key (fldID));
+		fldLocation varchar(40) not null,
+		fldPosiX1 int(11) not null,
+		fldPosiY1 int(11) not null,
+		fldPosiX2 int(11) not null,
+		fldPosiY2 int(11) not null,
+		primary key (fldID));
 
 /* table tbl_whs creation */
 
@@ -155,8 +146,8 @@ create table if not exists tbl_whs (
 
 create table if not exists tbl_whs_doc_bridge (
 	fldID BIGINT auto_increment not null,
-    fldFkDocId BIGINT not null,
-    fldFkWhsId BIGINT not null,
+	fldFkDocId BIGINT not null,
+	fldFkWhsId BIGINT not null,
     primary key (fldID),
 		index fldFkDocIdIdx (fldFkDocId),
         index fldFkWhsIdIdx (fldFkWhsId),
@@ -174,7 +165,7 @@ create table if not exists tbl_whs_doc_bridge (
 create table if not exists tbl_sus_doc_bridge (
 	fldID BIGINT auto_increment not null,
 	fldFKDocID BIGINT not null,
-    fldFKSusID BIGINT not null,
+	fldFKSusID BIGINT not null,
     primary key (fldID),
 		index fldFKDocIDIdx (fldFKDocID),
         index fldFkSusIDIdx (fldFKSusID),

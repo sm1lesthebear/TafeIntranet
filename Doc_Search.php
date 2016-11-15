@@ -5,7 +5,7 @@ $Function_lib = new function_lib();
 $UserCheck->userChecks(3);
 $WHSDropdown = $Function_lib->getDropdown("select fldID, CONCAT(fldFirstName , ' ' , fldLastName) as StakeholderName from tbl_stakeholders", "fldID", "StakeholderName");
 $SUSDropdown = $Function_lib->getDropdown("select fldID, CONCAT(fldFirstName , ' ' , fldLastName) as StakeholderName from tbl_stakeholders", "fldID", "StakeholderName");
-$outgoing_HTML = <<<HTML
+$outgoing_HTML =<<<HTML
                     <form>
                         <div class="row">
                             <div class="col-sm-10 col-sm-offset-1">

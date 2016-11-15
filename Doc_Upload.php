@@ -2,19 +2,20 @@
 require_once "CLASS_FILES/cClass_Connector.php";
 $UserCheck = new User_Account_Functions();
 $Function_lib = new function_lib();
+$DB_Function = new DB_Functions();
 $UserCheck->userchecks(3);
 
 $FileFail = "";
 $File_Input_Alert = "";
 $UnknownTitleField = "REPLACE THIS";
+$TableRow = "";
 
-$WHS_Dropdown = $Function_lib->getDropdown("select fldID, fldTitle from tbl_whs", "fldID", "fldTitle");
-$Sus_Dropdown = $Function_lib->getDropdown("select fldID, fldProjectName from tbl_sus", "fldID", "fldProjectName");
-$Doctype_Dropdown = $Function_lib->getDropdown("select fldID, fldType from tbl_doc_type", "fldID", "fldType");
 
-if($_SERVER['REQUEST_METHOD'] == "POST") {
+if($_SERVER['REQUEST_METHOD'] == "POST") 
+{
     $i_UploadedFile = $_FILES['file_upload'];
     $i_File = $Function_lib->Document_Handler($i_UploadedFile);
+    $i_Docname = $Function_lib->checkValue("Doc_Name", "");
     $i_Doctype = $Function_lib->checkValue("DocType", "");
     if (!isset($i_File)) 
     {
@@ -24,7 +25,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
     else 
     {
         $string = str_replace(' ', '', $i_File["name"]);
-        $target_dir = "RESOURCES/StakeholderImages/";
+        $target_dir = "RESOURCES/UploadedDocuments/";
         $target_file = $target_dir . basename($string);
         if (!file_exists($target_file)) 
         {
@@ -34,13 +35,59 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
             Insert into tbl_doc
 SQL;
     }    
+
+
+
+
+foreach($DB_Function->getfromDB($sSQL) as $row)
+{
+  
+  $Doc_ID = $row['fldID'];
+  $Doc_Name = $row['fldName'];
+  $Doc_File_Name = $row['fldLocation'];
+  $Doc_Type = $row['fldType'];
+  
+  $TableRow .= <<<HTML
+                <tr style="cursor:pointer" data-href="$Doc_File_Name">
+                    <td class="col-sm-2">$Doc_Name</td>
+                    <td class="col-sm-4">$Doc_File_Name</td>
+                    <td class="col-sm-6">$Doc_Type</td>
+                    <td class="Document_Download_Table"><a href="$Doc_File_Name" download></a></td>
+                </tr>
+HTML;
+}
 }
 
 
 
 
+if(($Repository =  $Function_lib->checkValue("Repository", "")) == 1)
+{
+  $RepositoryID = $Function_lib->checkValue("ID", "");
+  $sSQL =<<<SQL
+          select fldID, fldName, fldLocation, (select fldType from tbl_doc_type where fldID = fldFkDocTypeId) as fldType from tbl_doc D, tbl_whs_doc_bridge DB where D.fldID = DB.fldFkDocId AND DB.fldFkWhsId = $RepositoryID
+SQL;
+  $Doctype_Dropdown = $Function_lib->getDropdown("select fldID, fldType from tbl_doc_type", "fldID", "fldType");
+  foreach($DB_Function->getfromDB($sSQL) as $row)
+  {
+    
+  }
+}
+else
+{
+  $RepositoryID = $Function_lib->checkValue("ID", "");
+  $sSQL =<<<SQL
+          select fldID, fldName, fldLocation, (select fldType from tbl_doc_type where fldID = fldFkDocTypeId) as fldType from tbl_doc D, tbl_sus_doc_bridge DB where D.fldID = DB.fldFkDocId AND DB.fldFkSusId = $RepositoryID
+SQL;
+  $Doctype_Dropdown = $Function_lib->getDropdown("select fldID, fldCategory from tbl_doc_category", "fldID", "fldCategory");
+  foreach($DB_Function->getfromDB($sSQL) as $row)
+  {
+    
+  }
+}
 
-$outgoing_HTML = <<<HTML
+
+$outgoing_HTML =<<<HTML
 <div class="col-sm-4">
   <div class="col-sm-12">
     <h3>Upload A Document</h3>
@@ -52,7 +99,7 @@ $outgoing_HTML = <<<HTML
           $FileFail
       </div>
       <div class="col-sm-12">
-        <label class="margin-top" for="Doc_type">Document Name : </label>
+        <label class="margin-top" for="Doc_Name">Document Name : </label>
         <input class="form-control" type="text" required maxlength="45" name="Doc_Name" id="Doc_Name" Placeholder="Enter document name...">      </div
       </div>
       <div class="col-sm-12 margin-top">
@@ -73,18 +120,26 @@ $outgoing_HTML = <<<HTML
       <table class="table">
         <!--generated table info-->
         <thead>
-            <tr>
-                <th>Document Title</th>
-                <th>File Name</th>
-                <th>DocType</th>
-            </tr>
+          <tr>
+            <th>Document Title</th>
+            <th>File Name</th>
+            <th>DocType</th>
+          </tr>
         </thead>
         <tbody>
-            $TableRow
+          $TableRow
         </tbody>
     </table>
   </div>
 </div>
+<script>
+  $(document).ready(function(){
+    $('table tr').click(function(){
+        window.location = $(this).data('href');
+        return false;
+    });
+});
+</script>
 HTML;
 $oPage_Load = new Page_Load($outgoing_HTML);
 echo $oPage_Load->getPage();
