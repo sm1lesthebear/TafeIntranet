@@ -41,14 +41,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
                 {
                     move_uploaded_file($i_Image["tmp_name"], $target_file);
                 }
-                $StakeholderImage = <<<HTML
-                <div class="stakeholder-container col-sm-10 col-sm-offset-1 margin-bottom margin-top">
-                        <div class="col-sm-12">
-                            <h4 class="margin-bottom">Current Stakeholder Image:</h4>
-                            <img src="$i_ImageLocation" class="image_fluid">
-                        </div>
-                    </div>
-HTML;
+
             }
             if ($StakeholderID == null) 
             {
@@ -66,14 +59,8 @@ SQL;
                 ":Info" => $i_Info
             );
             $StakeholderID = $DBFunctions->commitSQL($sSQL, $Array);
-            $DeleteButton = <<<HTML
-                            <div class="col-sm-4 col-sm-offset-2 margin-bottom">
-                                <input type="submit" name="Submit" value="Delete" class="form-control btn btn-default">
-                            </div>
-                            
-HTML;
             
-
+            header("location:Stakeholder_Details.php?StakeholderID=$StakeholderID");
             break;
       case "Delete":
             $StakeholderID = $Function_lib->checkValue("StakeholderID", "");
@@ -128,7 +115,7 @@ HTML;
 
 
 
-$outgoing_HTML = <<<HTML
+$outgoing_HTML =<<<HTML
                             <div class="col-sm-10 col-sm-offset-1">
                                 <h3>Edit a Stakeholder </h3>
                             </div>

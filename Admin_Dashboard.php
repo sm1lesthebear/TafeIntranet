@@ -35,6 +35,11 @@ foreach ($DBFunctions->getfromDB($SQL) as $BeepBoop) {
                 </tr>
 HTML;
 }
+
+if ($Function_lib->checkValue("InsertFail", "") == "0")
+{
+  echo "<script>alert('The user could not be added');</script>";
+}
 $outgoing_HTML = <<<HTML
                     <div class="col-sm-12">
                         <h3 class="h1-margin-bottom">Admin Page</h3>

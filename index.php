@@ -11,7 +11,7 @@ if($UserMessage != "")
 }
 
 
-$outgoing_HTML = <<<HTML
+$outgoing_HTML =<<<HTML
 <!--                      Carousel  -->
                         <div class="slideshow-container">
                             <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -33,14 +33,14 @@ $outgoing_HTML = <<<HTML
                                 <div class="carousel-caption">
                                         <h1>Sustainability</h1>
                                         <p>Tafe Albany takes sustainability seriously, as can be seen on the sustainability portion of the GSIT Intranet</p>
-                                        <p><a class="btn btn-default btn-transparency col-sm-4 col-sm-offset-4" href="#" role="button">Go</a></p>
+                                        <p><a class="btn btn-default btn-transparency col-sm-4 col-sm-offset-4" href="Sustainability_Homepage.php" role="button">Go</a></p>
                                     </div>
                                 </div>  
                                 <div class="item" style="background-image: url(RESOURCES/slideshow-photo-3.jpg) ">
                                 <div class="carousel-caption">
                                         <h1>Work Health and Safety</h1>
                                         <p>At Tafe, employee and student health and safety is taken sseriously as can be seen on the WHS portion of the GSIT Intranet</p>
-                                        <p><a class="btn btn-default btn-transparency col-sm-4 col-sm-offset-4" href="#" role="button">Go</a></p>
+                                        <p><a class="btn btn-default btn-transparency col-sm-4 col-sm-offset-4" href="WHS_Homepage.php" role="button">Go</a></p>
                                     </div>
                                 </div>
                               <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">

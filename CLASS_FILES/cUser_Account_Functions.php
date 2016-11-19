@@ -21,7 +21,7 @@ class User_Account_Functions extends DB_Functions
           }
             return null;
         }
-        return die("no user found, sql error");
+        return header("location:login.php");
     }
     public function login_test($i_getSaltSQL, $i_username, $i_password)
     {
@@ -67,7 +67,6 @@ class User_Account_Functions extends DB_Functions
     public function generateRandomCharacter()
     {
         $var = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 1);
-        echo $var;
         return $var;
     }
 

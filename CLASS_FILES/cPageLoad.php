@@ -5,8 +5,9 @@ class Page_Load extends Class_Lib
     private $outgoing_Page = "";
     public function __construct($i_html)
     {
-        $AdminNav = "";
-        $AdminSidebar = "";
+        $Navbar = "";
+        $Sidebar = "";
+      
         if (isset($_SESSION['userID'])){
             $userID = $_SESSION['userID'];
         }else{
@@ -15,34 +16,98 @@ class Page_Load extends Class_Lib
         $DBFunc = new DB_Functions();
         if ($userID == null)
         {
-        $UserLogin = <<<HTML
+        $UserLogin =<<<HTML
                 <li class=""><a href="./login.php">Login</a></li>
 HTML;
         }
         else 
         {
-            $UserLogin = <<<HTML
+            $UserLogin =<<<HTML
                 <li class=""><a href="./login.php">Logout</a></li>
 HTML;
             foreach($DBFunc->getfromDB("select fldFkPrivilegeId from tbl_user where fldID = $userID") as $row)
             {
-                if($row['fldFkPrivilegeId'] == 1)
-                {
-                    $AdminNav = <<<HTML
-                        <li class=""><a href="./Admin_Dashboard.php">Admin Dashboard</a></li>
+              
+              switch ($row['fldFkPrivilegeId'])
+              {
+                case 1:
+                    $Navbar =<<<HTML
+                                <li class=""><a href="./Admin_Dashboard.php">Admin Dashboard</a></li>
 HTML;
-                    $AdminSidebar = <<<HTML
-     
-                    <li class="">
-                        <a href="./Admin_Dashboard.php">Admin Dashboard</a>
-                    </li>
+                    $Sidebar =<<<HTML
+                                <li>
+                                    <a href="./index.php">Homepage</a>
+                                </li>
 
+                                <li class="">
+                                    <a href="./Admin_Dashboard.php">Admin Dashboard</a>
+                                </li>
 HTML;
-                }
+                Break;
+                case 2:
+                  $Navbar =<<<HTML
+                            <li class=""><a href="./WHS_Homepage.php">WHS</a></li>
+                            <li class=""><a href="./Sustainability_Homepage.php">Sustainability</a></li>
+HTML;
+                  $Sidebar =<<<HTML
+                              <li>
+                                  <a href="./index.php">Homepage</a>
+                              </li>
+                              <li>
+                                  <a href="./WHS_Homepage.php">WHS Homepage</a>
+                              </li>
+                              <ul>
+                                  <li>
+                                      <a href="./Create_Incident.php">Log an Incident</a>
+                                  </li>
+                              </ul>
+                              <li>
+                                  <a href="./Sustainability_Homepage.php">Sustainability Homepage</a>
+                              </li>
+                              <ul>
+                                  <li>
+                                      <a href="./Project_Create.php">Create a Project</a>
+                                  </li>
+                              </ul>
+                              <li>
+                                  <a href="./Doc_Search.php">Document Search Page</a>
+                              </li>
+                              <li>
+                                  <a href="./View_stakeholders.php">View Stakeholders</a>
+                              </li>
+HTML;
+                Break;
+                case 3:
+                  $Navbar =<<<HTML
+                            <li class=""><a href="./WHS_Homepage.php">WHS</a></li>
+                            <li class=""><a href="./Sustainability_Homepage.php">Sustainability</a></li>
+HTML;
+                  $Sidebar =<<<HTML
+                            <li>
+                                <a href="./index.php">Homepage</a>
+                            </li>
+                            <li>
+                                <a href="./WHS_Homepage.php">WHS Homepage</a>
+                            </li>
+                            <li>
+                                <a href="./Sustainability_Homepage.php">Sustainability Homepage</a>
+                            </li>
+                            <li>
+                                <a href="./Doc_Search.php">Document Search Page</a>
+                            </li>
+                            <li>
+                                <a href="./View_stakeholders.php">View Stakeholders</a>
+                            </li>
+HTML;
+                Break;
+              default:
+              
+                Break;
+              }
             }
         }
 
-        $this->outgoing_Page = <<<HTML
+        $this->outgoing_Page =<<<HTML
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -102,9 +167,7 @@ HTML;
                                 <a href="./index.php"><img class="col-sm-1 img-max-min navbar-left" src="./RESOURCES/LOGO.png"></a>
                                 <div class="navbar-right">
                                     <ul class="nav navbar-nav navbar-right">
-                                        $AdminNav
-                                        <li class=""><a href="#">WHS</a></li>
-                                        <li class=""><a href="./Sustainability_Homepage.php">Sustainability</a></li>
+                                        $Navbar
                                         $UserLogin
                                     </ul>
                                 </div>
@@ -122,16 +185,7 @@ HTML;
             <!-- Sidebar -->
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
-                    <li>
-                        <a href="./index.php">Homepage</a>
-                    </li>
-                    <li>
-                        <a href="./View_stakeholders.php">View Stakeholders</a>
-                    </li>
-                    <li>
-                        <a href="./Sustainability_Homepage.php">Sustainability Homepage</a>
-                    </li>
-                    $AdminSidebar
+                    $Sidebar
                 </ul>
             </div>
 <!--        /#sidebar-wrapper -->

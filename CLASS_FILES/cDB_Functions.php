@@ -18,6 +18,24 @@ class DB_Functions extends DB_Conn
             return null;
         }
     }
+    public function UserInsert($sSQL,$Array)
+    {
+        try {
+            parent::oConn()->beginTransaction();
+            $oStmt = parent::oConn()->prepare($sSQL);
+            $oStmt->execute($Array);
+            foreach(parent::oConn()->query("select @InsertID") as $row)
+            {
+              $iInsertID = $row['@InsertID'];
+            }
+            parent::oConn()->commit();
+            return $iInsertID;
+        } Catch (\Exception $oE) {
+            parent::oConn()->rollBack();
+            echo $oE->getMessage();
+            return null;
+        }
+    }
     public function getfromDB($i_sql)
     {
         Return parent::oConn()->query($i_sql);

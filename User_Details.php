@@ -12,6 +12,7 @@ $i_Email = "";
 $i_Username = "";
 $DeleteThisButton = "";
 $UserIDField = "";
+$InsertID = "-99";
 $SubmitButtonClass = "col-sm-4 col-sm-offset-6 margin-top";
 $SubmitButton = "Submit";
 $UserCheck->userChecks(1);
@@ -37,10 +38,7 @@ HTML;
             $Salt = $UserFunctions->generateRandomSalt();
             $PasswordSalted = $UserFunctions->hashPassword($i_Password, $Salt);
             $sSQL = <<<SQL
-                    insert into tbl_user 
-                        (fldFirstName,fldLastName,fldEmail,fldUserName,fldPassword,fldPasswordSalt,fldFkPrivilegeId)
-                    VALUES 
-                        (:FirstName, :LastName, :Email, :Username, :Password, :PasswordSalt, :Privilege)
+            CALL InsertUser(:FirstName, :LastName, :Email, :Username, :Password, :PasswordSalt, :Privilege)
 SQL;
             $Array = array(
                 ":FirstName" => $i_FirstName,
@@ -49,14 +47,10 @@ SQL;
                 ":Username" => $i_Username,
                 ":Password" => $PasswordSalted,
                 ":PasswordSalt" => $Salt,
-                ":Privilege" => $i_Privilege
-            );
-            $UserID = $DBFunctions->commitSQL($sSQL, $Array);
-            $UserIDField = <<<HTML
-                    <input type="hidden" value="$UserID" name="UserIDField">   
-HTML;
-            $SubmitButton = "Update";
-            $User_Full_Name = '<b>Edit user: </b>' . $i_FirstName . ' ' . $i_LastName;
+                ":Privilege" => $i_Privilege,
+            );    
+           $DBFunctions->UserInsert($sSQL, $Array);
+            header("location: Admin_Dashboard.php");
             break;
         case 'Update':
             $UserID = $Function_lib->checkValue("UserIDField", "");
@@ -129,7 +123,7 @@ if ($UserID == $SessionUserID)
     $SubmitButtonClass = "col-sm-4 col-sm-offset-6 margin-top";
     $DeleteThisButton = "";
 }
-$outgoing_HTML = <<<HTML
+$outgoing_HTML =<<<HTML
                     <form action="User_Details.php" method="post" class="form-horizontal margin-top" role="form">
                         <div class="form-group" id="">
                             <div class="col-sm-8 col-sm-offset-2"> 

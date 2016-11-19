@@ -72,8 +72,8 @@ create table if not exists tbl_sus (
 
 create table if not exists tbl_doc (
 	fldID BIGINT auto_increment not null,
-    fldName varchar(40) not null,
-    fldLocation varchar(40) not null,
+    fldName text not null,
+    fldLocation text not null,
     fldFkDocTypeId BIGINT not null,
     fldFkDocCategoryId BIGINT not null,
     primary key (fldID),
@@ -96,7 +96,7 @@ create table if not exists tbl_user (
 	fldID BIGINT auto_increment not null,
     fldFirstName varchar(30) not null,
     fldLastName varchar(30) not null,
-    fldEmail varchar(60),
+    fldEmail varchar(60) not null,
     fldUserName varchar(45) not null,
     fldPassword text not null,
     fldPasswordSalt text not null,
@@ -191,3 +191,62 @@ create table tbl_sus_block_bridge (
 		foreign key (fldFKSusID)
 			references intranetdb.tbl_sus (fldID)
 );
+
+delimiter //
+
+create procedure InsertUser(
+	in FirstName varchar(60), 
+	in LastName varchar(60), 
+	in Email varchar(60), 
+	in Username varchar(60), 
+	in Password text, 
+	in PasswordSalt text, 
+	in Privilege int(11)
+)
+Not deterministic
+modifies sql data
+begin
+
+
+if Privilege = 1 then
+		SET @AdminCount := 0;
+		select count(fldFkPrivilegeId) into @AdminCount from tbl_user where fldFkPrivilegeId = 1;
+		if 2 > @AdminCount then
+			insert into tbl_user (
+				fldFirstName,
+				fldLastName,
+				fldEmail,
+				fldUserName,
+				fldPassword,
+				fldPasswordSalt,
+				fldFkPrivilegeId)
+			VALUES (
+				FirstName, 
+				LastName, 
+				Email, 
+				Username, 
+				Password, 
+				PasswordSalt, 
+				Privilege);
+		end if;
+elseif Privilege > 1 then
+	insert into tbl_user (
+		fldFirstName,
+		fldLastName,
+		fldEmail,
+		fldUserName,
+		fldPassword,
+		fldPasswordSalt,
+		fldFkPrivilegeId)
+	VALUES (
+		FirstName, 
+		LastName, 
+		Email, 
+		Username, 
+		Password, 
+		PasswordSalt, 
+		Privilege);
+end if;
+end;
+//
+delimiter ;

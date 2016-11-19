@@ -2,32 +2,35 @@
 require_once "CLASS_FILES/cClass_Connector.php";
 $UserCheck = new User_Account_Functions();
 $UserCheck->userChecks(3);
+$Function_lib = new function_lib();
+
 $outgoing_HTML =<<<HTML
-                        <div class="slideshow-container">
+                         <div class="slideshow-container">
                             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                               <div class="carousel-inner" role="listbox">
-                                <div class="item active" style="background-image: url(RESOURCES/slideshow-photo-2.jpg) ">
+                                <div class="item active" style="background-image: url(RESOURCES/slideshow-photo-3.jpg) ">
                                     <div class="carousel-caption">
-                                        <h1>Sustainability</h1>
+                                        <h1>Work Health and Safety</h1>
                                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                     </div>
                                 </div>
                               </div>
                             </div>
                         </div>
-                        <h1>Campus Sustainability Project Map</h1>
+                        
+                        <h1>Campus WHS Project Map</h1>
                         <p>
                             Curabitur non arcu eget risus efficitur blandit id at turpis. Nam congue massa ac tellus congue, a pellentesque arcu rutrum. Nulla egestas venenatis aliquam. Morbi porta, urna et molestie lobortis, tellus lacus feugiat dui, vestibulum sagittis diam neque porta nulla. Cras quis vulputate ligula, vitae condimentum turpis.
                         </p>
                         <div class="row">
                             <a href="#" class="btn btn-default col-sm-4 margin-bottom">See Map</a>
                         </div>
-                        <h1>Sustainability Documentation</h1>
+                        <h1>WHS Documentation</h1>
                         <p>
                            Praesent pulvinar urna velit, id scelerisque justo condimentum vestibulum. Nulla eget magna eu tortor sodales sollicitudin. Praesent at libero sit amet leo scelerisque tristique. Suspendisse pharetra dolor tempus luctus tincidunt.
                         </p>
                         <div class="row">
-                            <a href="Doc_Search.php" class="btn btn-default col-sm-4 margin-bottom">Search Sus Documents</a>
+                            <a href="Doc_Search.php" class="btn btn-default col-sm-4 margin-bottom">Search WHS Documents</a>
                         </div>
                         <h2>More Sample Text</h2>
                         <p>

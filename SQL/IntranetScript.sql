@@ -15,8 +15,8 @@ values
 insert into tbl_doc_category
 (fldCategory)
 values
-("Sustainability: Policy"),
-("Sustainability: Other");
+("WHS"),
+("SUS");
 
 insert into tbl_doc_type
 (fldType)
@@ -24,7 +24,9 @@ values
 ("None"), 
 ("Incident"), 
 ("Hazard"), 
-("Near-Miss");
+("Near-Miss"),
+("Policy"),
+("Other");
 
 insert into tbl_block 
 (fldLocation, fldPosiX1, fldPosiY1, fldPosiX2, fldPosiY2) 
@@ -91,3 +93,6 @@ values
 ("The comments on Pornhub video","4","7"),
 ("If i could stick my penor in ur vaginor","3","8"),
 ("Milo Yianopolos","2","4");
+
+
+

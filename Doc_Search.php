@@ -2,95 +2,108 @@
 require_once "CLASS_FILES/cClass_Connector.php";
 $UserCheck = new User_Account_Functions();
 $Function_lib = new function_lib();
+$DB_Function = new DB_Functions();
+$TableRow = "No results found";
 $UserCheck->userChecks(3);
-$WHSDropdown = $Function_lib->getDropdown("select fldID, CONCAT(fldFirstName , ' ' , fldLastName) as StakeholderName from tbl_stakeholders", "fldID", "StakeholderName");
-$SUSDropdown = $Function_lib->getDropdown("select fldID, CONCAT(fldFirstName , ' ' , fldLastName) as StakeholderName from tbl_stakeholders", "fldID", "StakeholderName");
+$SearchText = "";
+if ($_SERVER['REQUEST_METHOD'] == "POST")
+{
+  $Dropdown = $Function_lib->checkValue("Dropdown", ""); 
+  $SearchText = $Function_lib->checkValue("Search_Text", "");
+    
+  $sSQL =<<<SQL
+        select 
+          D.fldID, 
+          D.fldName, 
+          D.fldLocation, 
+          (select fldType from tbl_doc_type where fldID = D.fldFkDocTypeId) as fldType 
+        from 
+          tbl_doc D
+//           tbl_doc_type DT
+        where 
+            fldFkDocTypeId = $Dropdown
+         and
+            fldName like "%$SearchText%"
+SQL;
+  if (($Function_lib->checkValue("search_all_check", "") == "Checked"))
+  {
+    $sSQL =<<<SQL
+          select 
+            D.fldID, 
+            D.fldName, 
+            D.fldLocation, 
+            (select fldType from tbl_doc_type where fldID = D.fldFkDocTypeId) as fldType 
+          from 
+            tbl_doc D
+          where
+             fldName like "%$SearchText%"
+SQL;
+  }
+  foreach($DB_Function->getfromDB($sSQL) as $row)
+  {
+    $Doc_ID = $row['fldID'];
+    $Doc_Name = $row['fldName'];
+    $Doc_File_Name = $row['fldLocation'];
+    $Doc_Type = $row['fldType'];
+    $TableRow .=<<<HTML
+                  <tr style="cursor:pointer" data-href="$Doc_File_Name">
+                      <td class="col-sm-4">$Doc_Name</td>
+                      <td class="col-sm-4">$Doc_File_Name</td>
+                      <td class="col-sm-2">$Doc_Type</td>
+                      <td class="Document_Download_Table"><a href="$Doc_File_Name" download></a></td>
+                  </tr>
+HTML;
+  }
+}
+$Dropdown = $Function_lib->getDropdown("select * from tbl_doc_type", "fldID", "fldType");
 $outgoing_HTML =<<<HTML
-                    <form>
+                    <div class="col-sm-10 col-sm-offset-1">
+                      <h3>Document Search Page</h3>
+                    </div>
+                    <form action="Doc_Search.php" method="POST">
                         <div class="row">
                             <div class="col-sm-10 col-sm-offset-1">
                                 <p>Enter Search term(s)...</p>
-                                <input required maxlength="45" type="text"  class="form-control" name="First_Name" id="First_Name" Placeholder="Enter Search term(s)...">
+                                <input required maxlength="45" type="text"  class="form-control" name="Search_Text" id="Search_Text" Placeholder="Enter Search term(s)..." value="$SearchText">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-5 col-sm-offset-1 margin-top" id="WHS" style="display: block;">
-                                <p>Work health and safety</p>
-                                <select class="form-control">
-                                    $WHSDropdown
-                                    <option id="x">Cancertroy</option>
-                                    <option id="x">Succ</option>
-                                    <option id="x">Ghey</option>
-                                    <option id="x">Homophobia</option>
-                                    <option id="x">IntGain</option>
-                                    <option id="x">RIkiIsalive</option>
-                                </select>  
-                            </div>
-                            <div class="col-sm-5 col-sm-offset-1 margin-top" style="display: none;" id="SUS">
-                                <p>Sustainability</p>
-                                <select class="form-control">
-                                    $SUSDropdown
-                                    <option id="x">Aids</option>
-                                    <option id="x">Succ</option>
-                                    <option id="x">Ghey</option>
-                                    <option id="x">Homophobia</option>
-                                    <option id="x">IntGain</option>
-                                    <option id="x">RIkiIsalive</option>
-                                </select>  
-                            </div>
-                            <div class="col-sm-2 margin-top">                            
-                                <div style="float: right;">
-                                    <p>Toggle WHS/SUS</p>
-                                    <input id="Sus_Whs_Dropdown" type="checkbox" onClick="WHS_SUS_Check()">
-                                </div>
-                            </div>
-                            <div class="col-sm-2 margin-top">
-                                <div style="float: right;">
-                                    <p>Search all Projects</p>
-                                    <input id="search_all_check" type="checkbox" onClick="Search_All()">
-                                </div>
-                            </div>
+                          <div class="col-sm-5 col-sm-offset-1 margin-top" id="Dropdown">
+                            <p>Select Document Type</p>
+                            <select name="Dropdown" class="form-control">
+                                $Dropdown
+                            </select>  
+                          </div>
+                          <div class="col-sm-5 margin-top">
+                              <div style="float: right;">
+                                  <p>Search all Documents</p>
+                                  <input name="search_all_check" type="checkbox" value="Checked">
+                              </div>
+                          </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-5 col-sm-offset-1 margin-top">
-                                <p>Doctype</p>
-                                <select class="form-control">
-                                    $SUSDropdown
-                                    <option id="x">Aids</option>
-                                    <option id="x">Succ</option>
-                                    <option id="x">Ghey</option>
-                                    <option id="x">Homophobia</option>
-                                    <option id="x">IntGain</option>
-                                    <option id="x">RIkiIsalive</option>
-                                </select>  
-                            </div>
+                          <div class="col-sm-3 col-sm-offset-1">
+                              <input class="btn btn-default margin-top" type="Submit" name="Submit" value="Submit">
+                          </div>
                         </div>
                     </form>
-                    <script>
-                        function Search_All() 
-                        {
-                              var checkbox = document.getElementById("search_all_check");
-                              var toggle1 = document.getElementById("SUS");
-                              var toggle2 = document.getElementById("WHS");
-                               
-                              checkbox.checked ? toggle1.disabled = true : toggle1.disabled = false;
-                              checkbox.checked ? toggle2.disabled = true : toggle2.disabled = false;
-                             
-                              return alert("functon being hit");
-                        }
-                        function WHS_SUS_Check()
-                        {
-                            if (document.getElementById("SUS").style.display == 'none')
-                            {
-                                document.getElementById("SUS").style.display = 'block';
-                                document.getElementById("WHS").style.display = 'none';
-                            } else 
-                            {
-                                document.getElementById("SUS").style.display = 'none';
-                                document.getElementById("WHS").style.display = 'block';
-                            }
-                        }
-                    </script>
+                    <div class="col-sm-10 col-sm-offset-1">
+                      <h3 class="h1-margin-bottom">Search Results: </h3> 
+                      <table class="table">
+                        <!--generated table info-->
+                        <thead>
+                          <tr>
+                            <th>Document Title</th>
+                            <th>File Name</th>
+                            <th>DocType</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          $TableRow
+                        </tbody>
+                      </table>
+                    </div>
 HTML;
 $oPage_Load = new Page_Load($outgoing_HTML);
 echo $oPage_Load->getPage();

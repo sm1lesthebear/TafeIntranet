@@ -5,7 +5,7 @@ $FunctionLibary = new function_lib();
 $UserCheck = new User_Account_Functions();
 $UserCheck->userChecks(3);
 
-
+$CurrDate = date('Y-m-d');
 $Incident_Type_Dropdown = $FunctionLibary->getDropdown("select fldID, fldType from tbl_whs_type", "fldID", "fldType");
 $Block_ID_Dropdown = $FunctionLibary->getDropdown("select fldID, fldLocation from tbl_block", "fldID", "fldLocation");
 
@@ -14,15 +14,17 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 {
   $Incident_Title = $FunctionLibary->checkValue("Incident_Title","");
   $Incident_Type = $FunctionLibary->checkValue("Incident_Type","");
+  $Incident_Date = $FunctionLibary->checkValue("date","");
   $Block_ID = $FunctionLibary->checkValue("Block_ID","");
   $sSQL =<<<SQL
     insert into tbl_whs
-    (fldTitle, fldFkWhsTypeId, fldFkBlockId)
+    (fldTitle, fldDate, fldFkWhsTypeId, fldFkBlockId)
     values
-    (:IncidentTitle, :IncidentType, :IncidentBlock)
+    (:IncidentTitle, :IncidentDate, :IncidentType, :IncidentBlock)
 SQL;
   $Array = array(
     ":IncidentTitle" => $Incident_Title,
+    ":IncidentDate" => $Incident_Title,
     ":IncidentType" => $Incident_Type,
     ":IncidentBlock" => $Block_ID
   );
@@ -37,6 +39,12 @@ $outgoing_HTML =<<<HTML
     <div class="form-group">
       <label for="Incident_Title">Enter the Incident location</label>
       <input class="form-control" type="text" required maxlength="45" name="Incident_Title" id="Incident_Title" Placeholder="Enter Incident Name...">
+    </div>
+    <div class="form-group">
+      <div class='' id='datetimepicker1'>
+        <label for="date">Enter the Incident Date</label>
+        <input type='date' name="date" max="$CurrDate" class="form-control">
+      </div>
     </div>
     <div class="form-group">
       <label for="Incident_Type">Enter the Incident type</label>
