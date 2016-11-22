@@ -112,7 +112,7 @@ create table if not exists tbl_user (
 /* table tbl_block creation */
 
 create table if not exists tbl_block (
-	fldID BIGINT auto_increment not null,
+	fldID int(11) auto_increment not null,
 		fldLocation varchar(40) not null,
 		fldPosiX1 int(11) not null,
 		fldPosiY1 int(11) not null,
@@ -206,8 +206,6 @@ create procedure InsertUser(
 Not deterministic
 modifies sql data
 begin
-
-
 if Privilege = 1 then
 		SET @AdminCount := 0;
 		select count(fldFkPrivilegeId) into @AdminCount from tbl_user where fldFkPrivilegeId = 1;
@@ -247,6 +245,52 @@ elseif Privilege > 1 then
 		PasswordSalt, 
 		Privilege);
 end if;
+end;
+//
+delimiter ;
+delimiter //
+
+create procedure DeleteFromTable(
+	in DeleteID int(11)
+)
+	Not deterministic
+	modifies sql data
+	begin
+
+		delete from tbl_whs_doc_bridge
+		where fldFKDocID = DeleteID;
+		
+		delete from tbl_sus_doc_bridge
+		where fldFKDocID = DeleteID;
+
+		DELETE FROM tbl_doc
+		WHERE fldID = DeleteID;
+		
+	
+end;
+//
+delimiter ;
+delimiter //
+
+	create procedure UpdateUser(
+		in FirstName varchar(45),
+		in LastName varchar(45),
+		in Email varchar(45),
+		in Username varchar(45),
+		in Password text,
+		in PasswordSalt text,
+		in Privilege int(11),
+		in UpdateID int(11)
+	)
+		Not Deterministic
+		modifies sql data
+		begin
+			update
+				tbl_user
+			set
+				fldFirstName = FirstName, fldLastName = LastName, fldEmail = Email, fldUserName = Username, fldPassword = Password, fldPasswordSalt = PasswordSalt, fldFkPrivilegeId = Privilege
+			where
+				fldID = UpdateID;
 end;
 //
 delimiter ;

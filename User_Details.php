@@ -1,6 +1,7 @@
 <?php
 require_once "CLASS_FILES/cClass_Connector.php";
 $UserCheck = new User_Account_Functions();
+$UserCheck->userChecks(1);
 $Function_lib = new function_lib();
 $DBFunctions = new DB_Functions();
 $UserFunctions = new User_Account_Functions();
@@ -15,7 +16,6 @@ $UserIDField = "";
 $InsertID = "-99";
 $SubmitButtonClass = "col-sm-4 col-sm-offset-6 margin-top";
 $SubmitButton = "Submit";
-$UserCheck->userChecks(1);
 $PrivilegeDropdownOptions = $Function_lib->getDropdown("select fldID, fldTitle from tbl_privilege", "fldID", "fldTitle");
 if($_SERVER['REQUEST_METHOD'] == "POST") {
     $UserID = $Function_lib->checkValue("UserIDField", "");
@@ -37,7 +37,7 @@ HTML;
             $UserID = $Function_lib->checkValue("UserIDField", "");
             $Salt = $UserFunctions->generateRandomSalt();
             $PasswordSalted = $UserFunctions->hashPassword($i_Password, $Salt);
-            $sSQL = <<<SQL
+            $sSQL =<<<SQL
             CALL InsertUser(:FirstName, :LastName, :Email, :Username, :Password, :PasswordSalt, :Privilege)
 SQL;
             $Array = array(
@@ -56,13 +56,8 @@ SQL;
             $UserID = $Function_lib->checkValue("UserIDField", "");
             $Salt = $UserFunctions->generateRandomSalt();
             $PasswordSalted = $UserFunctions->hashPassword($i_Password, $Salt);
-            $sSQL = <<<SQL
-                    update
-                        tbl_user
-                    set
-                        fldFirstName = :FirstName, fldLastName = :LastName, fldEmail = :Email, fldUserName = :Username, fldPassword = :Password, fldPasswordSalt = :PasswordSalt, fldFkPrivilegeId = :Privilege
-                    where
-                        fldID = $UserID
+            $sSQL =<<<SQL
+                  CALL UpdateUser(:FirstName, :LastName, :Email, :Username, :Password, :PasswordSalt, :Privilege, :UpdateID)
 SQL;
             $Array = array(
                 ":FirstName" => $i_FirstName,
@@ -71,9 +66,10 @@ SQL;
                 ":Username" => $i_Username,
                 ":Password" => $PasswordSalted,
                 ":PasswordSalt" => $Salt,
-                ":Privilege" => $i_Privilege
+                ":Privilege" => $i_Privilege,
+                ":UpdateID" => $UserID
             );
-            $UserID = $DBFunctions->commitSQL($sSQL, $Array);
+            $DBFunctions->commitSQL($sSQL, $Array);
             $UserIDField = <<<HTML
                     <input type="hidden" value="$UserID" name="UserIDField">   
 HTML;

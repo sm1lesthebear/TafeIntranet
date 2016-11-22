@@ -10,12 +10,11 @@ class User_Account_Functions extends DB_Functions
           {
             header("location:Admin_Dashboard.php");
           }
-          elseif ($row["$i_fld_privilege"] > $i_RequirePrivilege)
+          elseif($i_RequirePrivilege == 1 && $row["$i_fld_privilege"] != 1)
           {
-                
                 return header("location:index.php?UserMessage=". urlencode("Incorrect User Permissions"));
           }
-          elseif($i_RequirePrivilege == 1 && $row["$i_fld_privilege"] != 1)
+          elseif($i_RequirePrivilege == 2 && $row["$i_fld_privilege"] != 2)
           {
                 return header("location:index.php?UserMessage=". urlencode("Incorrect User Permissions"));
           }

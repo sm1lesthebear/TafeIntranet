@@ -145,5 +145,9 @@ input[type=checkbox] {
     display:block;
     height:100%;
     width:100%;
+}
 
+#Campus_Map {
+    width: 100%;
+    max-width: 512px;
 }

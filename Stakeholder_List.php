@@ -17,7 +17,7 @@ foreach ($DBFunctions->getfromDB($SQL) as $BeepBoop) {
     $StakekholderID = $BeepBoop['fldID'];
     $StakeholderName = $BeepBoop['Name'];
     $StakeholderInfo = $BeepBoop['fldInfo'];
-    $TableRow .= <<<HTML
+    $TableRow .=<<<HTML
     
                 <tr style="cursor:pointer" onclick="location.href='Stakeholder_Details.php?StakeholderID=$StakekholderID'">
                     <td class="col-sm-2">$StakekholderID</td>
@@ -26,7 +26,7 @@ foreach ($DBFunctions->getfromDB($SQL) as $BeepBoop) {
                 </tr>
 HTML;
 }
-$outgoing_HTML = <<<HTML
+$outgoing_HTML =<<<HTML
                     <div class="col-sm-12">
                         <h3 class="h1-margin-bottom">Admin Page</h3>
                         <h3 class="h1-margin-bottom">User list</h3> <p>select a user to edit them</p>

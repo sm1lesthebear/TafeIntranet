@@ -24,7 +24,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
   {
     $FileFail = "Unsuccessful File Upload";
     $File_Input_Alert = "input-alert";
-  } 
+  }
   else 
   {
     $string = str_replace(' ', '', $i_File["name"]);
@@ -46,8 +46,9 @@ SQL;
       ":DocType" => $i_Doctype,
       ":DocCategory" => $Repository
     );
+    
     $Uploaded_DocID = $DB_Function->commitSQL($sSQL, $array);
-
+if(($Repository = $Function_lib->checkValue("Repository", "")) == 1)
     $sSQL =<<<SQL
           Insert into tbl_whs_doc_bridge
           (fldFkDocId, fldFkWhsId)
@@ -62,6 +63,15 @@ SQL;
   }   
 }
 
+$DeleteID = $Function_lib->checkValue("DeleteID", Null);
+if (isset($DeleteID))
+{
+  $sSQL =<<<SQL
+        CALL DeleteDoc($DeleteID)
+SQL;
+  $DB_Function->getfromDB($sSQL);
+}
+
 if(($Repository = $Function_lib->checkValue("Repository", "")) == 1)
 {
   $RepositoryID = $Function_lib->checkValue("ID", "");
@@ -74,10 +84,10 @@ if(($Repository = $Function_lib->checkValue("Repository", "")) == 1)
           from 
             tbl_doc D, 
             tbl_whs_doc_bridge DB 
-          where  
+          where 
             D.fldID = DB.fldFkDocId 
           AND 
-            DB.fldFkWhsId = $RepositoryID
+            DB.fldFkWhsId = $RepositoryID 
 SQL;
   $Doctype_Dropdown = $Function_lib->getDropdown("select fldID, fldType from tbl_doc_type", "fldID", "fldType");
   foreach($DB_Function->getfromDB($sSQL) as $row)
@@ -88,11 +98,12 @@ SQL;
     $Doc_Type = $row['fldType'];
 
     $TableRow .=<<<HTML
-                  <tr style="cursor:pointer" data-href="$Doc_File_Name">
+                  <tr data-href="$Doc_File_Name">
                       <td class="col-sm-4">$Doc_Name</td>
                       <td class="col-sm-4">$Doc_File_Name</td>
                       <td class="col-sm-2">$Doc_Type</td>
-                      <td class="Document_Download_Table"><a href="$Doc_File_Name" download></a></td>
+                      <td class="col-sm-2"><a href="Doc_Upload.php?DeleteID=$Doc_ID&Repository=$Repository&ID=$RepositoryID" class="btn btn-default">Delete this</a></td> 
+                      <td class="Document_Download_Table"><a href="$Doc_File_Name" class="btn btn-default" download>Download</a></td>
                   </tr>
 HTML;
   }
@@ -129,10 +140,11 @@ SQL;
     $Doc_File_Name = $row['fldLocation'];
     $Doc_Type = $row['fldType'];
     $TableRow .=<<<HTML
-                  <tr style="cursor:pointer" data-href="$Doc_File_Name">
-                      <td class="col-sm-4">$Doc_Name</td>
-                      <td class="col-sm-4">$Doc_File_Name</td>
-                      <td class="col-sm-2">$Doc_Type</td>
+                  <tr data-href="$Doc_File_Name">
+                      <td>$Doc_Name</td>
+                      <td>$Doc_File_Name</td>
+                      <td>$Doc_Type</td>
+                      <td ><a href="Doc_Upload.php?DeleteID=$Doc_ID&Repository=$Repository&ID=$RepositoryID" class="btn btn-default">Delete</a></td> 
                       <td class="Document_Download_Table"><a href="$Doc_File_Name" download></a></td>
                   </tr>
 HTML;
@@ -146,12 +158,13 @@ SQL;
   }
 }
 
+
 $outgoing_HTML =<<<HTML
 <div class="col-sm-4">
   <div class="col-sm-12">
     <h3>Upload A Document</h3>
   </div>
-  <form action="Doc_Upload.php" method="post" enctype="multipart/form-data" class="margin-top" role="form">
+  <form action="Doc_Upload.php?Repository=$Repository&ID=$RepositoryID" method="post" enctype="multipart/form-data" class="margin-top" role="form">
       <div class="col-sm-12 margin-bottom">
         <label class="margin-top" for="file_upload">File to Upload : </label>
         <input required class="form-control btn btn-default $File_Input_Alert" type="file" name="file_upload" id="file_upload">
@@ -175,9 +188,10 @@ $outgoing_HTML =<<<HTML
   </form>
 </div>
 <div class="col-sm-8">
-    <div class="col-sm-12">
-      <h3 class="h1-margin-bottom">Documents for: $RepositoryName</h3> 
-      <p>select a user to edit them</p>
+  <div class="col-sm-12">
+    <h3 class="h1-margin-bottom">Documents for: $RepositoryName</h3> 
+    <p>select a user to edit them</p>
+    <div class="table_responsive">
       <table class="table">
         <!--generated table info-->
         <thead>
@@ -185,23 +199,17 @@ $outgoing_HTML =<<<HTML
             <th>Document Title</th>
             <th>File Name</th>
             <th>DocType</th>
-            <th></th>
+            <th>Delete</th>
+            <th>Download</th>
           </tr>
         </thead>
         <tbody>
           $TableRow
         </tbody>
-    </table>
+      </table>
+    </div>
   </div>
 </div>
-<script>
-  $(document).ready(function(){
-    $('table tr').click(function(){
-        window.location = $(this).data('href');
-        return false;
-    });
-});
-</script>
 HTML;
 $oPage_Load = new Page_Load($outgoing_HTML);
 echo $oPage_Load->getPage();

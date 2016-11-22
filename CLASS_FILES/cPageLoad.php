@@ -131,7 +131,7 @@ HTML;
         <link href="./CSS/simple-sidebar.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="./CSS/style_main.css" rel="stylesheet">
-                <!-- Slideshow CSS -->
+        <!-- Slideshow CSS -->
         <link href="./CSS/JS-Slideshow.css" rel="stylesheet">
     </head>
     <body>

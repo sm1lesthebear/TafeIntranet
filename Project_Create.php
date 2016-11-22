@@ -3,7 +3,7 @@ require_once "CLASS_FILES/cClass_Connector.php";
 $DBFunctions = new DB_Functions();
 $FunctionLibary = new function_lib();
 $UserCheck = new User_Account_Functions();
-$UserCheck->userChecks(3);
+$UserCheck->userChecks(2);
 
 $Block_ID_Dropdown = $FunctionLibary->getDropdown("select fldID, fldLocation from tbl_block", "fldID", "fldLocation");
 

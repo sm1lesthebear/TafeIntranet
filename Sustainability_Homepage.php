@@ -20,7 +20,7 @@ $outgoing_HTML =<<<HTML
                             Curabitur non arcu eget risus efficitur blandit id at turpis. Nam congue massa ac tellus congue, a pellentesque arcu rutrum. Nulla egestas venenatis aliquam. Morbi porta, urna et molestie lobortis, tellus lacus feugiat dui, vestibulum sagittis diam neque porta nulla. Cras quis vulputate ligula, vitae condimentum turpis.
                         </p>
                         <div class="row">
-                            <a href="#" class="btn btn-default col-sm-4 margin-bottom">See Map</a>
+                            <a href="Map.php?Repository=2" class="btn btn-default col-sm-4 margin-bottom">See Map</a>
                         </div>
                         <h1>Sustainability Documentation</h1>
                         <p>
@@ -29,10 +29,13 @@ $outgoing_HTML =<<<HTML
                         <div class="row">
                             <a href="Doc_Search.php" class="btn btn-default col-sm-4 margin-bottom">Search Sus Documents</a>
                         </div>
-                        <h2>More Sample Text</h2>
+                        <h1>Sustainability Documentation</h1>
                         <p>
-                            Vivamus eu facilisis ipsum. Proin non elit sit amet risus sagittis ultrices vel at magna. Etiam consectetur hendrerit mollis. Praesent malesuada, neque non mollis egestas, libero arcu pellentesque nibh, vitae vulputate felis magna sit amet lacus. Etiam ut massa sapien. Maecenas sit amet nisi ut metus placerat placerat. Phasellus in leo eu metus elementum tristique.
+                           Praesent pulvinar urna velit, id scelerisque justo condimentum vestibulum. Nulla eget magna eu tortor sodales sollicitudin. Praesent at libero sit amet leo scelerisque tristique. Suspendisse pharetra dolor tempus luctus tincidunt.
                         </p>
+                        <div class="row">
+                            <a href="Project_Create.php" class="btn btn-default col-sm-4 margin-bottom">Create a Project</a>
+                        </div>
                         <p>
                             Etiam luctus, nibh id dignissim tristique, erat urna dapibus massa, eget feugiat mi tellus eget nibh. Praesent dolor lacus, convallis vel rhoncus eget, feugiat eget massa. Morbi volutpat est quis mattis euismod. Praesent pretium enim risus, eget tristique felis lacinia non. Morbi tristique bibendum orci, sed varius ligula laoreet quis. In interdum, neque et sollicitudin molestie, elit lorem bibendum ex, ac finibus dui est commodo lacus. Mauris vestibulum commodo risus, eu placerat arcu faucibus id. Quisque non facilisis ipsum. Praesent ut sapien dignissim, commodo risus vel, lobortis massa. Nunc ut tellus hendrerit, hendrerit felis non, pulvinar turpis. Praesent sollicitudin fringilla enim vel laoreet. Duis leo sapien, sollicitudin vel nisl at, rutrum rhoncus tortor.
                         </p>

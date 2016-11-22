@@ -3,7 +3,7 @@ require_once "CLASS_FILES/cClass_Connector.php";
 $DBFunctions = new DB_Functions();
 $FunctionLibary = new function_lib();
 $UserCheck = new User_Account_Functions();
-$UserCheck->userChecks(3);
+$UserCheck->userChecks(2);
 
 $CurrDate = date('Y-m-d');
 $Incident_Type_Dropdown = $FunctionLibary->getDropdown("select fldID, fldType from tbl_whs_type", "fldID", "fldType");

@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")
           (select fldType from tbl_doc_type where fldID = D.fldFkDocTypeId) as fldType 
         from 
           tbl_doc D
-//           tbl_doc_type DT
         where 
             fldFkDocTypeId = $Dropdown
          and

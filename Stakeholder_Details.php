@@ -64,7 +64,7 @@ SQL;
             break;
       case "Delete":
             $StakeholderID = $Function_lib->checkValue("StakeholderID", "");
-            $sSQL = <<<SQL
+            $sSQL =<<<SQL
                     delete from tbl_stakeholders
                     where fldID = $StakeholderID
 SQL;
