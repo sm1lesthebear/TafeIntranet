@@ -10,7 +10,7 @@ if($UserMessage != "")
   print '<script type="text/javascript">alert("' . $_GET['UserMessage'] . '");</script>';
 }
 
-
+//outgoing html
 $outgoing_HTML =<<<HTML
 <!--                      Carousel  -->
                         <div class="slideshow-container">
