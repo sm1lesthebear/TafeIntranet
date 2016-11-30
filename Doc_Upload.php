@@ -46,34 +46,49 @@ SQL;
       ":DocType" => $i_Doctype,
       ":DocCategory" => $Repository
     );
-    
     $Uploaded_DocID = $DB_Function->commitSQL($sSQL, $array);
-if(($Repository = $Function_lib->checkValue("Repository", "")) == 1)
-    $sSQL =<<<SQL
-          Insert into tbl_whs_doc_bridge
-          (fldFkDocId, fldFkWhsId)
-          values
-          (:DocID, :RepositoryID)
+    
+    if(($Repository = $Function_lib->checkValue("Repository", "")) == 1)
+    {
+
+        $sSQL =<<<SQL
+              Insert into tbl_whs_doc_bridge
+              (fldFkDocId, fldFkWhsId)
+              values
+              (:DocID, :RepositoryID)
 SQL;
-    $array = array(
-      ":DocID" => $Uploaded_DocID,
-      ":RepositoryID" => $RepositoryID
-    );
-    $DB_Function->commitSQL($sSQL, $array);
+        $array = array(
+          ":DocID" => $Uploaded_DocID,
+          ":RepositoryID" => $RepositoryID
+        );
+        $DB_Function->commitSQL($sSQL, $array);
+    }
+    elseif(($Repository = $Function_lib->checkValue("Repository", "")) == 2)
+    {
+              $sSQL =<<<SQL
+              Insert into tbl_sus_doc_bridge
+              (fldFkDocId, fldFkSusId)
+              values
+              (:DocID, :RepositoryID)
+SQL;
+        $array = array(
+          ":DocID" => $Uploaded_DocID,
+          ":RepositoryID" => $RepositoryID
+        );
+        $DB_Function->commitSQL($sSQL, $array);
+    }
   }   
 }
-
-$DeleteID = $Function_lib->checkValue("DeleteID", Null);
-if (isset($DeleteID))
-{
-  $sSQL =<<<SQL
-        CALL DeleteDoc($DeleteID)
-SQL;
-  $DB_Function->getfromDB($sSQL);
-}
-
 if(($Repository = $Function_lib->checkValue("Repository", "")) == 1)
 {
+  $DeleteID = $Function_lib->checkValue("DeleteID", Null);
+  if (isset($DeleteID))
+  {
+    $sSQL =<<<SQL
+          CALL DeleteFromWhsTable($DeleteID)
+SQL;
+    $DB_Function->getfromDB($sSQL);
+  }
   $RepositoryID = $Function_lib->checkValue("ID", "");
   $sSQL =<<<SQL
           select 
@@ -117,6 +132,14 @@ SQL;
 }
 elseif (($Repository =  $Function_lib->checkValue("Repository", "")) == 2)
 {
+  $DeleteID = $Function_lib->checkValue("DeleteID", Null);
+  if (isset($DeleteID))
+  {
+    $sSQL =<<<SQL
+          CALL DeleteFromSusTable($DeleteID)
+SQL;
+    $DB_Function->getfromDB($sSQL);
+  }
   $RepositoryID = $Function_lib->checkValue("ID", "");
   $sSQL =<<<SQL
           select 
@@ -141,11 +164,11 @@ SQL;
     $Doc_Type = $row['fldType'];
     $TableRow .=<<<HTML
                   <tr data-href="$Doc_File_Name">
-                      <td>$Doc_Name</td>
-                      <td>$Doc_File_Name</td>
-                      <td>$Doc_Type</td>
-                      <td ><a href="Doc_Upload.php?DeleteID=$Doc_ID&Repository=$Repository&ID=$RepositoryID" class="btn btn-default">Delete</a></td> 
-                      <td class="Document_Download_Table"><a href="$Doc_File_Name" download></a></td>
+                      <td class="col-sm-4">$Doc_Name</td>
+                      <td class="col-sm-4">$Doc_File_Name</td>
+                      <td class="col-sm-2">$Doc_Type</td>
+                      <td class="col-sm-2"><a href="Doc_Upload.php?DeleteID=$Doc_ID&Repository=$Repository&ID=$RepositoryID" class="btn btn-default">Delete this</a></td> 
+                      <td class="Document_Download_Table"><a href="$Doc_File_Name" class="btn btn-default" download>Download</a></td>
                   </tr>
 HTML;
   }

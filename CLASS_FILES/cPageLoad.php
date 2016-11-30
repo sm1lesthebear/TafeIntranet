@@ -58,6 +58,9 @@ HTML;
                               </li>
                               <ul>
                                   <li>
+                                      <a href="Map.php?Repository=1">WHS Map</a>
+                                  </li>
+                                  <li>
                                       <a href="./Create_Incident.php">Log an Incident</a>
                                   </li>
                               </ul>
@@ -65,6 +68,9 @@ HTML;
                                   <a href="./Sustainability_Homepage.php">Sustainability Homepage</a>
                               </li>
                               <ul>
+                                  <li>
+                                      <a href="Map.php?Repository=2">SUS Map</a>
+                                  </li>
                                   <li>
                                       <a href="./Project_Create.php">Create a Project</a>
                                   </li>

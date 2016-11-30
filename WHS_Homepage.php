@@ -3,6 +3,33 @@ require_once "CLASS_FILES/cClass_Connector.php";
 $UserCheck = new User_Account_Functions();
 $UserCheck->userChecks(3);
 $Function_lib = new function_lib();
+$DB_Functions = new DB_Functions(); 
+
+
+$diff = "No Incidents Recorded";
+
+$CurrDate = date('Y-m-d');
+
+$sSQL =<<<SQL
+      select fldDate from tbl_whs order by fldDate desc limit 1;
+SQL;
+
+foreach($DB_Functions->getfromDB($sSQL) as $row)
+{
+  $IncidentDate = $row['fldDate'];
+  $IncidentDate = strtotime($IncidentDate);
+  $IncidentDate = date('Y-m-d',$IncidentDate);
+  
+  $IncidentDate = date_create($IncidentDate);
+  $CurrDate = date_create($CurrDate);
+  
+  $diff = date_diff($IncidentDate,$CurrDate);
+  
+  $diff = $diff->format("%a");
+}
+
+
+
 
 $outgoing_HTML =<<<HTML
                          <div class="slideshow-container">
@@ -17,20 +44,15 @@ $outgoing_HTML =<<<HTML
                               </div>
                             </div>
                         </div>
-                        
+                                         
+                        <h1> Days since last incident: $diff</h1>
+                        <br>
                         <h1>Campus WHS Project Map</h1>
                         <p>
                             Curabitur non arcu eget risus efficitur blandit id at turpis. Nam congue massa ac tellus congue, a pellentesque arcu rutrum. Nulla egestas venenatis aliquam. Morbi porta, urna et molestie lobortis, tellus lacus feugiat dui, vestibulum sagittis diam neque porta nulla. Cras quis vulputate ligula, vitae condimentum turpis.
                         </p>
                         <div class="row">
                             <a href="Map.php?Repository=1" class="btn btn-default col-sm-4 margin-bottom">See Map</a>
-                        </div>
-                        <h1>WHS Documentation</h1>
-                        <p>
-                           Praesent pulvinar urna velit, id scelerisque justo condimentum vestibulum. Nulla eget magna eu tortor sodales sollicitudin. Praesent at libero sit amet leo scelerisque tristique. Suspendisse pharetra dolor tempus luctus tincidunt.
-                        </p>
-                        <div class="row">
-                            <a href="Doc_Search.php" class="btn btn-default col-sm-4 margin-bottom">Search WHS Documents</a>
                         </div>
                         <h1>WHS Incident Logging</h1>
                         <p>

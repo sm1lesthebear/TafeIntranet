@@ -27,13 +27,6 @@ $outgoing_HTML =<<<HTML
                            Praesent pulvinar urna velit, id scelerisque justo condimentum vestibulum. Nulla eget magna eu tortor sodales sollicitudin. Praesent at libero sit amet leo scelerisque tristique. Suspendisse pharetra dolor tempus luctus tincidunt.
                         </p>
                         <div class="row">
-                            <a href="Doc_Search.php" class="btn btn-default col-sm-4 margin-bottom">Search Sus Documents</a>
-                        </div>
-                        <h1>Sustainability Documentation</h1>
-                        <p>
-                           Praesent pulvinar urna velit, id scelerisque justo condimentum vestibulum. Nulla eget magna eu tortor sodales sollicitudin. Praesent at libero sit amet leo scelerisque tristique. Suspendisse pharetra dolor tempus luctus tincidunt.
-                        </p>
-                        <div class="row">
                             <a href="Project_Create.php" class="btn btn-default col-sm-4 margin-bottom">Create a Project</a>
                         </div>
                         <p>

@@ -45,11 +45,11 @@ SQL;
     $Doc_File_Name = $row['fldLocation'];
     $Doc_Type = $row['fldType'];
     $TableRow .=<<<HTML
-                  <tr style="cursor:pointer" data-href="$Doc_File_Name">
+                  <tr>
                       <td class="col-sm-4">$Doc_Name</td>
                       <td class="col-sm-4">$Doc_File_Name</td>
                       <td class="col-sm-2">$Doc_Type</td>
-                      <td class="Document_Download_Table"><a href="$Doc_File_Name" download></a></td>
+                      <td class="Document_Download_Table"><a href="$Doc_File_Name" class="btn btn-default" download>Download</a></td>
                   </tr>
 HTML;
   }
@@ -63,7 +63,7 @@ $outgoing_HTML =<<<HTML
                         <div class="row">
                             <div class="col-sm-10 col-sm-offset-1">
                                 <p>Enter Search term(s)...</p>
-                                <input required maxlength="45" type="text"  class="form-control" name="Search_Text" id="Search_Text" Placeholder="Enter Search term(s)..." value="$SearchText">
+                                <input maxlength="45" type="text"  class="form-control" name="Search_Text" id="Search_Text" Placeholder="Enter Search term(s)..." value="$SearchText">
                             </div>
                         </div>
                         <div class="row">
@@ -95,7 +95,7 @@ $outgoing_HTML =<<<HTML
                             <th>Document Title</th>
                             <th>File Name</th>
                             <th>DocType</th>
-                            <th></th>
+                            <th>Download</th>
                           </tr>
                         </thead>
                         <tbody>

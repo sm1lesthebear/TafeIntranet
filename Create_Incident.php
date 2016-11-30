@@ -15,6 +15,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
   $Incident_Title = $FunctionLibary->checkValue("Incident_Title","");
   $Incident_Type = $FunctionLibary->checkValue("Incident_Type","");
   $Incident_Date = $FunctionLibary->checkValue("date","");
+  
+  $date = strtotime($Incident_Date);
+	$date = date('Y-m-d H:i:s', $date);	
+  
+  
   $Block_ID = $FunctionLibary->checkValue("Block_ID","");
   $sSQL =<<<SQL
     insert into tbl_whs
@@ -24,7 +29,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 SQL;
   $Array = array(
     ":IncidentTitle" => $Incident_Title,
-    ":IncidentDate" => $Incident_Title,
+    ":IncidentDate" => $Incident_Date,
     ":IncidentType" => $Incident_Type,
     ":IncidentBlock" => $Block_ID
   );
@@ -34,7 +39,7 @@ SQL;
 
 $outgoing_HTML =<<<HTML
 <div class="col-sm-10 col-sm-offset-1">
-  <h3>Create a Incident</h3>
+  <h3>Create an Incident</h3>
   <form action="Create_Incident.php" method="post">
     <div class="form-group">
       <label for="Incident_Title">Enter the Incident location</label>
@@ -43,7 +48,7 @@ $outgoing_HTML =<<<HTML
     <div class="form-group">
       <div class='' id='datetimepicker1'>
         <label for="date">Enter the Incident Date</label>
-        <input type='date' name="date" max="$CurrDate" class="form-control">
+        <input type='date' name="date" max="$CurrDate" class="form-control" value="$CurrDate">
       </div>
     </div>
     <div class="form-group">

@@ -5,6 +5,9 @@ $UserCheck->userChecks(3);
 $Function_lib = new function_lib();
 $DBFunctions = new DB_Functions();
 
+$PieChartHTMl = "";
+$PieChart="";
+
 $MapAreaTagHTML = "";
 $TableRow = "";
 $BlockName = "Please select a block";
@@ -26,12 +29,32 @@ SQL;
       
       $TableRow .=<<<HTML
         <tr data-href="Doc_Upload.php?Repository=$Repository&ID=$ID">
-          <td>$Doc_Name</td>
-          <td><a href="Doc_Upload.php?Repository=$Repository&ID=$ID">View</a></td>
+          <td>$Title</td>
+          <td><a href="Doc_Upload.php?Repository=$Repository&ID=$ID" class="btn btn-default">View</a></td>
         </tr>
 HTML;
     }
   }
+			$sSQL =<<<SQL
+				select count(W.fldFkWhsTypeId) as typecount, WT.fldType from tbl_whs W, tbl_whs_type WT where W.fldFkWhsTypeId = WT.fldID group by fldFkWhsTypeId
+SQL;
+		foreach($DBFunctions->getfromDB($sSQL) as $row)
+		{
+			
+			$FieldName = $row['fldType'];
+			$Count = $row['typecount'];
+			
+			$PieChartHTMl =<<<HTML
+			<div class="margin-top col-sm-12">
+				<div id="piechart" style="width: 300px; height: 225px;"></div>
+			</div>		
+HTML;
+			
+			$PieChart .=<<<HTML
+				["$FieldName", $Count],
+HTML;
+		}
+		$PieChart = rtrim($PieChart, ',');
 }
 elseif($Repository == 2)
 {
@@ -102,37 +125,35 @@ $outgoing_HTML =<<<HTML
           $TableRow
         </tbody>
       </table>
+			$PieChartHTMl
   </div>
 </div>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script type="text/javascript" src="JS/imageMapResizer.min.js"></script>
-	<script type="text/javascript">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="JS/imageMapResizer.min.js"></script>
+<script type="text/javascript">
 
 		$('map').imageMapResize();
 
 	</script>
-<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
-    ['Task', 'Hours per Day'],
-    ['Work',     11],
-    ['Eat',      2],
-    ['Commute',  2],
-    ['Watch TV', 2],
-    ['Sleep',    7]
+    ['Type', 'Total'],
+		$PieChart
   ]);
 
   var options = {
-    title: 'My Daily Activities'
+		backgroundColor: 'transparent',
+    title: 'Incident type Ratio Report'
   };
   var chart = new google.visualization.PieChart(document.getElementById('piechart'));
   chart.draw(data, options);
 }
 </script>
-  -->
 HTML;
 $oPage_Load = new Page_Load($outgoing_HTML);
 echo $oPage_Load->getPage();

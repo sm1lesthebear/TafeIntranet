@@ -14,9 +14,15 @@ $i_Username = "";
 $DeleteThisButton = "";
 $UserIDField = "";
 $InsertID = "-99";
+
+$UserCount = $Function_lib->checkValue("UserCount", "");
+
 $SubmitButtonClass = "col-sm-4 col-sm-offset-6 margin-top";
 $SubmitButton = "Submit";
 $PrivilegeDropdownOptions = $Function_lib->getDropdown("select fldID, fldTitle from tbl_privilege", "fldID", "fldTitle");
+
+
+
 if($_SERVER['REQUEST_METHOD'] == "POST") {
     $UserID = $Function_lib->checkValue("UserIDField", "");
     $i_FirstName = $Function_lib->checkValue("First_Name", "");
@@ -27,7 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
     $i_PasswordConfirm = $Function_lib->checkValue("User_Password_Confirm", "");
     $i_Privilege = $Function_lib->checkValue("PrivilegeDropdown", "");
     $SubmitButtonClass = "col-sm-4 margin-top";
-    $DeleteThisButton = <<<HTML
+    $DeleteThisButton =<<<HTML
                             <div class="col-sm-4 col-sm-offset-2 margin-top">
                                 <input type="submit" name="Submit" value="Delete" class="form-control btn btn-default">
                             </div>
@@ -50,7 +56,7 @@ SQL;
                 ":Privilege" => $i_Privilege,
             );    
            $DBFunctions->UserInsert($sSQL, $Array);
-            header("location: Admin_Dashboard.php");
+            header("location: Admin_Dashboard.php?UserCount=$UserCount");
             break;
         case 'Update':
             $UserID = $Function_lib->checkValue("UserIDField", "");
@@ -86,7 +92,7 @@ SQL;
                 ":UserID" => $UserID
             );
             $UserID = $DBFunctions->commitSQL($sSQL, $Array);
-            header("location: View_Users.php");
+            header("location: Admin_Dashboard.php");
             break;
         default:
             break;
@@ -120,7 +126,7 @@ if ($UserID == $SessionUserID)
     $DeleteThisButton = "";
 }
 $outgoing_HTML =<<<HTML
-                    <form action="User_Details.php" method="post" class="form-horizontal margin-top" role="form">
+                    <form action="User_Details.php?UserCount=$UserCount" method="post" class="form-horizontal margin-top" role="form">
                         <div class="form-group" id="">
                             <div class="col-sm-8 col-sm-offset-2"> 
                                 <h3>$User_Full_Name</h3>

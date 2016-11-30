@@ -24,28 +24,28 @@ USE `intranetdb` ;
 /* Table tbl_doc_category creation */
 
 create table if not exists tbl_doc_category (
-	fldID BIGINT auto_increment not null,
+	fldID int(11) auto_increment not null,
     fldCategory varchar(50) not null,
     primary key (fldID));
 
 /* Table tbl_doc_type creation*/
 
 create table if not exists tbl_doc_type (
-	fldID BIGINT auto_increment not null,
+	fldID int(11) auto_increment not null,
     fldType varchar(50) not null,
     primary key(fldID));
 
 /* table tbl_privilege creation */
 
 create table if not exists tbl_privilege (
-	fldID BIGINT auto_increment not null,
+	fldID int(11) auto_increment not null,
     fldTitle varchar(30) not null,
     primary key (fldID));
 
 /* table tbl_whs_type creation */
 
 create table if not exists tbl_whs_type (
-	fldID BIGINT auto_increment not null,
+	fldID int(11) auto_increment not null,
 	fldType varchar(30) not null,
   primary key (fldID))
 ENGINE = InnoDB
@@ -54,7 +54,7 @@ DEFAULT CHARACTER SET = utf8;
 /* table tbl_stakeholders  creation */
 
 create table if not exists tbl_stakeholders (
-	fldID BIGINT auto_increment not null,
+	fldID int(11) auto_increment not null,
     fldFirstName varchar(30) not null,
     fldLastName varchar(30) not null,
     fldImageLocation Text not null,
@@ -64,18 +64,18 @@ create table if not exists tbl_stakeholders (
 /* table tbl_sus creation */
 
 create table if not exists tbl_sus (
-	fldID BIGINT auto_increment not null,
-    fldProjectName varchar(40) not null,
+	fldID int(11) auto_increment not null,
+    fldProjectName varchar(60) not null,
     primary key (fldID));
 
 /* table tbl_doc creation */
 
 create table if not exists tbl_doc (
-	fldID BIGINT auto_increment not null,
+	fldID int(11) auto_increment not null,
     fldName text not null,
     fldLocation text not null,
-    fldFkDocTypeId BIGINT not null,
-    fldFkDocCategoryId BIGINT not null,
+    fldFkDocTypeId int(11) not null,
+    fldFkDocCategoryId int(11) not null,
     primary key (fldID),
 		index fldFkDocTypeIdIdx (fldFkDocTypeId),
         index fldFkDocCategoryIdIdx (fldFkDocCategoryId),
@@ -93,14 +93,14 @@ create table if not exists tbl_doc (
 /* table tbl_user creation */
 
 create table if not exists tbl_user (
-	fldID BIGINT auto_increment not null,
+	fldID int(11) auto_increment not null,
     fldFirstName varchar(30) not null,
     fldLastName varchar(30) not null,
     fldEmail varchar(60) not null,
     fldUserName varchar(45) not null,
     fldPassword text not null,
     fldPasswordSalt text not null,
-    fldFkPrivilegeId BIGINT not null,
+    fldFkPrivilegeId int(11) not null,
     primary key (fldID),
 		index fldFkPrivilegeIdIdx (fldFkPrivilegeId),
 	constraint fldFkprivilegeId
@@ -123,11 +123,11 @@ create table if not exists tbl_block (
 /* table tbl_whs creation */
 
 create table if not exists tbl_whs (
-	fldID BIGINT auto_increment not null,
+	fldID int(11) auto_increment not null,
 		fldTitle varchar(60) not null,
     fldDate TIMESTAMP not null default NOW(),
-    fldFkWhsTypeId BIGINT not null,
-    fldFkBlockId BIGINT not null,
+    fldFkWhsTypeId int(11) not null,
+    fldFkBlockId int(11) not null,
     primary key (fldID),
 			index fldFkBlockIdIdx (fldFkBlockId),
 			index fldFkWhsTypeIdIdx (fldFkWhsTypeId),
@@ -145,9 +145,9 @@ create table if not exists tbl_whs (
 /* table tbl_doc_bridge creation */
 
 create table if not exists tbl_whs_doc_bridge (
-	fldID BIGINT auto_increment not null,
-	fldFkDocId BIGINT not null,
-	fldFkWhsId BIGINT not null,
+	fldID int(11) auto_increment not null,
+	fldFkDocId int(11) not null,
+	fldFkWhsId int(11) not null,
     primary key (fldID),
 		index fldFkDocIdIdx (fldFkDocId),
         index fldFkWhsIdIdx (fldFkWhsId),
@@ -163,9 +163,9 @@ create table if not exists tbl_whs_doc_bridge (
 		on update no action);
 
 create table if not exists tbl_sus_doc_bridge (
-	fldID BIGINT auto_increment not null,
-	fldFKDocID BIGINT not null,
-	fldFKSusID BIGINT not null,
+	fldID int(11) auto_increment not null,
+	fldFKDocID int(11) not null,
+	fldFKSusID int(11) not null,
     primary key (fldID),
 		index fldFKDocIDIdx (fldFKDocID),
         index fldFkSusIDIdx (fldFKSusID),
@@ -178,9 +178,9 @@ create table if not exists tbl_sus_doc_bridge (
 );
 
 create table tbl_sus_block_bridge (
-	fldID BIGINT auto_increment not null,
-    fldFkBlockID BIGINT not null,
-    fldFKSusID BIGINT not null,
+	fldID int(11) auto_increment not null,
+    fldFkBlockID int(11) not null,
+    fldFKSusID int(11) not null,
     primary key (fldID),
 		index fldFkBlockIDIdx (fldFkBlockID),
         index fldFKSusIDIdx (fldFKSusID),
@@ -250,7 +250,7 @@ end;
 delimiter ;
 delimiter //
 
-create procedure DeleteFromTable(
+create procedure DeleteFromWhsTable(
 	in DeleteID int(11)
 )
 	Not deterministic
@@ -259,6 +259,22 @@ create procedure DeleteFromTable(
 
 		delete from tbl_whs_doc_bridge
 		where fldFKDocID = DeleteID;
+
+		DELETE FROM tbl_doc
+		WHERE fldID = DeleteID;
+		
+	
+end;
+//
+delimiter ;
+delimiter //
+
+create procedure DeleteFromSusTable(
+	in DeleteID int(11)
+)
+	Not deterministic
+	modifies sql data
+	begin
 		
 		delete from tbl_sus_doc_bridge
 		where fldFKDocID = DeleteID;
